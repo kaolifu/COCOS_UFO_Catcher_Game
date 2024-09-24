@@ -1,4 +1,5 @@
 import BallInfo from '../ball/BallInfo'
+import CatcherControl from '../catcher/CatcherControl'
 import CoinManager from '../manager/CoinManager'
 import UIManager from '../manager/UIManager'
 import FSMState from '../utility/FSMState'
@@ -8,11 +9,20 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class GameState_RoundOver extends FSMState {
+  uiManager: UIManager
+  gameControl: GameControl
+  // catcherControl: CatcherControl
   onEnter(): void {
     super.onEnter()
 
-    let caughtBalls: cc.Node[] =
-      this.component.getComponent(UIManager).caughtBallList.children
+    this.uiManager = this.component.getComponent(UIManager)
+    this.gameControl = this.component.getComponent(GameControl)
+    // this.catcherControl = this.component.getComponent(CatcherControl)
+
+    let caughtBalls: cc.Node[] = this.uiManager.caughtBallList.children
+    this.stopAllBallsAnim(caughtBalls)
+
+    // this.catcherControl.button.getComponent(cc.Button).interactable = false
 
     if (caughtBalls.length > 0) {
       let isBombExist = caughtBalls.some(
@@ -23,24 +33,20 @@ export default class GameState_RoundOver extends FSMState {
         this.playBombWarnAnim(() => {
           this.playBombAnim(caughtBalls, () => {
             this.playSettleAnimSquance(caughtBalls, () => {
-              this.component
-                .getComponent(UIManager)
-                .clearCaughtBallListChildren()
-              this.component.node
-                .getComponent(GameControl)
-                .changeToPrepareState()
+              this.uiManager.clearCaughtBallListChildren()
+              this.gameControl.changeToPrepareState()
             })
           })
         })
       } else {
         // 做结算处理
         this.playSettleAnimSquance(caughtBalls, () => {
-          this.component.getComponent(UIManager).clearCaughtBallListChildren()
-          this.component.node.getComponent(GameControl).changeToPrepareState()
+          this.uiManager.clearCaughtBallListChildren()
+          this.gameControl.changeToPrepareState()
         })
       }
     } else {
-      this.component.getComponent(GameControl).changeToPrepareState()
+      this.gameControl.changeToPrepareState()
     }
   }
   onUpdate(dt: any): void {
@@ -89,7 +95,7 @@ export default class GameState_RoundOver extends FSMState {
       if (balls[i].getComponent(BallInfo).ballName == 'bombBall') {
         balls[i].getComponent(cc.Animation).play('Ball_Explode')
         balls[i].getComponent(cc.Animation).on('finished', () => {
-          balls[i].getComponent(cc.Animation).off('finished')
+          // balls[i].getComponent(cc.Animation).off('finished')
           callback && callback()
         })
         // console.log(i + '是炸弹')
@@ -112,14 +118,11 @@ export default class GameState_RoundOver extends FSMState {
   }
 
   playBombWarnAnim(callback?: Function): void {
-    this.component.getComponent(UIManager).showBombWarnUI()
-    this.component
-      .getComponent(UIManager)
-      .bombWarnUI.getComponent(cc.Animation)
-      .on('finished', () => {
-        this.component.getComponent(UIManager).hideBombWarnUI()
-        callback && callback()
-      })
+    this.uiManager.showBombWarnUI()
+    this.uiManager.bombWarnUI.getComponent(cc.Animation).on('finished', () => {
+      this.uiManager.hideBombWarnUI()
+      callback && callback()
+    })
   }
 
   playSettleAnimSquance(balls: cc.Node[], callback?: Function): void {
@@ -132,13 +135,18 @@ export default class GameState_RoundOver extends FSMState {
     let ball = leftBalls[0]
     ball.getComponent(cc.Animation).play('Ball_Settle')
     CoinManager.Instance.addCoin(ball.getComponent(BallInfo).score)
-    this.component
-      .getComponent(UIManager)
-      .updateCoinUI(CoinManager.Instance.Coin)
+    this.uiManager.updateCoinUI(CoinManager.Instance.Coin)
 
     ball.getComponent(cc.Animation).on('finished', () => {
       ball.getComponent(cc.Animation).off('finished')
       this.playSettleAnimSquance(balls, callback)
     })
+  }
+
+  stopAllBallsAnim(balls: cc.Node[]): void {
+    for (let ball of balls) {
+      ball.getComponent(cc.Animation).setCurrentTime(0)
+      ball.getComponent(cc.Animation).stop()
+    }
   }
 }

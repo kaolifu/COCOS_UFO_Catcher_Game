@@ -17,6 +17,8 @@ export default class UIManager extends cc.Component {
   bombWarnUI: cc.Node = null
   @property(cc.Node)
   CoinUI: cc.Node = null
+  @property(cc.Node)
+  TimeOutUI: cc.Node = null
 
   start() {}
 
@@ -81,5 +83,15 @@ export default class UIManager extends cc.Component {
 
   updateCoinUI(coin: number) {
     this.CoinUI.children[1].getComponent(cc.Label).string = coin.toString()
+  }
+
+  showTimeOutUI() {
+    this.TimeOutUI.active = true
+    this.TimeOutUI.getComponent(cc.Animation).play()
+  }
+
+  hideTimeOutUI() {
+    this.TimeOutUI.active = false
+    this.TimeOutUI.getComponent(cc.Animation).stop()
   }
 }

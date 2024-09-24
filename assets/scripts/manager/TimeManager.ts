@@ -10,7 +10,7 @@ export default class TimeManager {
     return this._instance
   }
 
-  roundTime: number = 999
+  roundTime: number = 45
   timer: number = 0
   timerId: number = 0
   remainTime: number = this.roundTime - this.timer
@@ -25,6 +25,7 @@ export default class TimeManager {
   }
   stopTimer() {
     this.timer = 0
+    this.remainTime = this.roundTime
     clearTimeout(this.timerId)
   }
   getRemainTime() {

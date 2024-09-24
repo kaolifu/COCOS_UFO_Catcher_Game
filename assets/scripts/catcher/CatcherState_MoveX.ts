@@ -1,4 +1,3 @@
-import Data from '../data/Data'
 import FSMState from '../utility/FSMState'
 import CatcherControl from './CatcherControl'
 import CatcherFork from './CatcherFork'
@@ -13,6 +12,8 @@ export default class CatcherState_MoveX extends FSMState {
   horizontal: number = 0
   speed: number = 300
 
+  isButtonLighting: boolean = false
+
   onEnter(): void {
     super.onEnter()
 
@@ -21,7 +22,9 @@ export default class CatcherState_MoveX extends FSMState {
     this.addPartsToMove()
 
     this.listenHanlder()
-    this.listenButton()
+
+    this.catcherControl.button.getComponent(cc.Button).interactable = true
+    this.catcherControl.button.getComponent(cc.Animation).play()
   }
   onUpdate(dt: any): void {
     super.onUpdate(dt)
@@ -34,6 +37,8 @@ export default class CatcherState_MoveX extends FSMState {
     super.onExit()
 
     this.stopAllListen()
+    this.catcherControl.button.getComponent(cc.Animation).setCurrentTime(0)
+    this.catcherControl.button.getComponent(cc.Animation).stop()
   }
 
   addPartsToMove() {
@@ -51,18 +56,15 @@ export default class CatcherState_MoveX extends FSMState {
     this.catcherControl.handler.on(cc.Node.EventType.TOUCH_MOVE, (e) => {
       let deltaX = e.getDelta().x
       this.horizontal = deltaX > 0 ? 1 : deltaX < 0 ? -1 : 0
+      this.catcherControl.handler.angle = 30 * -this.horizontal
     })
     this.catcherControl.handler.on(cc.Node.EventType.TOUCH_END, (e) => {
       this.horizontal = 0
+      this.catcherControl.handler.angle = 30 * -this.horizontal
     })
     this.catcherControl.handler.on(cc.Node.EventType.TOUCH_CANCEL, (e) => {
       this.horizontal = 0
-    })
-  }
-
-  listenButton() {
-    this.catcherControl.button.on(cc.Node.EventType.TOUCH_START, () => {
-      this.catcherControl.changeToMoveYState()
+      this.catcherControl.handler.angle = 30 * -this.horizontal
     })
   }
 
@@ -92,6 +94,6 @@ export default class CatcherState_MoveX extends FSMState {
     this.catcherControl.handler.off(cc.Node.EventType.TOUCH_MOVE)
     this.catcherControl.handler.off(cc.Node.EventType.TOUCH_END)
     this.catcherControl.handler.off(cc.Node.EventType.TOUCH_CANCEL)
-    this.catcherControl.button.off(cc.Node.EventType.TOUCH_START)
+    this.catcherControl.button.getComponent(cc.Button).interactable = false
   }
 }

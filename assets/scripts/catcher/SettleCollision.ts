@@ -7,7 +7,7 @@ const { ccclass, property } = cc._decorator
 export default class SettleCollision extends cc.Component {
   gameManager: cc.Node
   onLoad() {
-    this.gameManager = cc.find('GameManager')
+    this.gameManager = cc.find('Canvas/GameManager')
   }
   start() {}
   onCollisionEnter(other: any, self: any) {

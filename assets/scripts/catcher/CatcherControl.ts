@@ -87,4 +87,12 @@ export default class CatcherControl extends cc.Component {
   changeToDisabledState() {
     this.fsmManager.changeState(CatcherState.Disabled)
   }
+
+  initCatcherPosition() {
+    this.catcher.getComponent(cc.Animation).setCurrentTime(0, 'Catcher_Catch')
+  }
+
+  onButtonClick() {
+    this.changeToMoveYState()
+  }
 }

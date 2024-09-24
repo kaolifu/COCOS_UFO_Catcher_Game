@@ -15,7 +15,6 @@ export default class BallManager extends cc.Component {
   // update (dt) {}
 
   createBalls() {
-    this.node.removeAllChildren()
     for (let i = 0; i < 70; i++) {
       this.instantiateBall()
     }
@@ -24,8 +23,8 @@ export default class BallManager extends cc.Component {
   instantiateBall() {
     let ballNode = cc.instantiate(this.ballPrefab)
     ballNode.parent = this.node
-    ballNode.x = Math.random() * 700 - 350
-    ballNode.y = Math.random() * 500 - 250
+    ballNode.x = Math.random() * 900 - 450
+    ballNode.y = Math.random() * 450 - 225
 
     const ballData = Data.ballData
     const amountPercent = ballData.reduce(
@@ -49,6 +48,10 @@ export default class BallManager extends cc.Component {
         break
       }
     }
+  }
+
+  clearBallsInBox() {
+    this.node.removeAllChildren()
   }
 
   clearCaughtBallsThisRound() {

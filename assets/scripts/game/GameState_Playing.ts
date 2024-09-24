@@ -16,6 +16,9 @@ export default class GameState_Playing extends FSMState {
     let bm = this.component.node.getComponent(BallManager)
     let ccontrol = this.component.node.getComponent(CatcherControl)
 
+    ccontrol.initCatcherPosition()
+    bm.clearBallsInBox()
+
     um.showCountDownUI()
     um.countDownUI.getComponent(cc.Animation).on('finished', () => {
       um.hideCountDownUI()
@@ -40,7 +43,14 @@ export default class GameState_Playing extends FSMState {
         .getComponent(CatcherControl)
         .catcher.getComponent(cc.Animation)
         .stop()
-      this.component.node.getComponent(GameControl).changeToRoundOverState()
+      this.component.node.getComponent(CatcherControl).changeToDisabledState()
+
+      this.component.node.getComponent(UIManager).showTimeOutUI()
+
+      this.component.scheduleOnce(() => {
+        this.component.node.getComponent(UIManager).hideTimeOutUI()
+        this.component.node.getComponent(GameControl).changeToRoundOverState()
+      }, 3)
     }
   }
   onExit(): void {

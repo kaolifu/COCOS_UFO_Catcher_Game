@@ -1,3 +1,4 @@
+import CoinManager from '../manager/CoinManager'
 import TimeManager from '../manager/TimeManager'
 import UIManager from '../manager/UIManager'
 import FSMState from '../utility/FSMState'
@@ -10,6 +11,9 @@ export default class GameState_Prepare extends FSMState {
     super.onEnter()
 
     this.component.getComponent(UIManager).showSkillSelectUI()
+    this.component
+      .getComponent(UIManager)
+      .updateCoinUI(CoinManager.Instance.Coin)
 
     this.component
       .getComponent(UIManager)

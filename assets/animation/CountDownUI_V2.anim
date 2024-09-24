@@ -1,0 +1,99 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "CountDownUI_V2",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 4,
+  "sample": 12,
+  "speed": 1.5,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "countDown3": {
+        "props": {
+          "x": [
+            {
+              "frame": 0,
+              "value": 801.729
+            },
+            {
+              "frame": 0.25,
+              "value": 0
+            },
+            {
+              "frame": 0.75,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": -800
+            }
+          ]
+        }
+      },
+      "countDown2": {
+        "props": {
+          "x": [
+            {
+              "frame": 1,
+              "value": 801.729
+            },
+            {
+              "frame": 1.25,
+              "value": 0
+            },
+            {
+              "frame": 1.75,
+              "value": 0
+            },
+            {
+              "frame": 2,
+              "value": -800
+            }
+          ]
+        }
+      },
+      "countDown1": {
+        "props": {
+          "x": [
+            {
+              "frame": 2,
+              "value": 801.729
+            },
+            {
+              "frame": 2.25,
+              "value": 0
+            },
+            {
+              "frame": 2.75,
+              "value": 0
+            },
+            {
+              "frame": 3,
+              "value": -800
+            }
+          ]
+        }
+      },
+      "countDownStart": {
+        "props": {
+          "x": [
+            {
+              "frame": 3,
+              "value": 801.729
+            },
+            {
+              "frame": 3.25,
+              "value": 0
+            },
+            {
+              "frame": 4,
+              "value": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
