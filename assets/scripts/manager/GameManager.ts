@@ -1,5 +1,6 @@
 import CatcherControl from '../catcher/CatcherControl'
 import Data from '../data/Data'
+import BallManager from './BallManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -7,6 +8,7 @@ const { ccclass, property } = cc._decorator
 export default class GameManager extends cc.Component {
   onLoad() {
     cc.director.getPhysicsManager().enabled = true
+    cc.director.getCollisionManager().enabled = true
   }
 
   start() {
@@ -17,7 +19,5 @@ export default class GameManager extends cc.Component {
 
   async initializeGame() {
     await Data.initialize()
-
-    cc.find('CatcherControl').getComponent(CatcherControl).changeToMoveXState()
   }
 }

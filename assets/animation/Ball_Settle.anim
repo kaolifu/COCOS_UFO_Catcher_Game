@@ -1,0 +1,76 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "Ball_Settle",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.5,
+  "sample": 12,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "coin": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": true
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 57.064
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.08333333333333333,
+              "value": 255
+            }
+          ]
+        }
+      },
+      "image": {
+        "props": {
+          "active": [],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 255
+            },
+            {
+              "frame": 0.08333333333333333,
+              "value": 0
+            }
+          ]
+        }
+      }
+    },
+    "props": {
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 255
+        },
+        {
+          "frame": 0.4166666666666667,
+          "value": 255
+        },
+        {
+          "frame": 0.5,
+          "value": 0
+        }
+      ]
+    }
+  },
+  "events": []
+}

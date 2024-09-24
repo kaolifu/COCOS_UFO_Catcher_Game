@@ -7,7 +7,7 @@ interface BallData {
   percent: number
   rarityPercent: number
   rarityMultiplier: number
-  spirteFrame: cc.SpriteFrame
+  spriteFrame: cc.SpriteFrame
 }
 
 @ccclass
@@ -45,43 +45,43 @@ export default class Data {
           percent: 20,
           rarityPercent: 0.1,
           rarityMultiplier: 3,
-          spirteFrame: appleSpriteFrame,
+          spriteFrame: appleSpriteFrame,
         },
         {
           id: '2',
           ballName: 'cherryBall',
-          score: 1,
+          score: 2,
           percent: 20,
           rarityPercent: 0.1,
           rarityMultiplier: 3,
-          spirteFrame: appleSpriteFrame,
+          spriteFrame: cherriesSpriteFrame,
         },
         {
           id: '3',
           ballName: 'melonBall',
-          score: 1,
+          score: 3,
           percent: 20,
           rarityPercent: 0.1,
           rarityMultiplier: 3,
-          spirteFrame: appleSpriteFrame,
+          spriteFrame: melonSpriteFrame,
         },
         {
           id: '4',
           ballName: 'coinBronzeBall',
-          score: 1,
+          score: 10,
           percent: 20,
-          rarityPercent: 0.1,
-          rarityMultiplier: 3,
-          spirteFrame: appleSpriteFrame,
+          rarityPercent: 0,
+          rarityMultiplier: 0,
+          spriteFrame: coinBronzeSpriteFrame,
         },
         {
           id: '5',
           ballName: 'bombBall',
-          score: 1,
+          score: 0,
           percent: 20,
-          rarityPercent: 0.1,
-          rarityMultiplier: 3,
-          spirteFrame: appleSpriteFrame,
+          rarityPercent: 0,
+          rarityMultiplier: 0,
+          spriteFrame: bombSpriteFrame,
         },
       ]
     } catch (error) {

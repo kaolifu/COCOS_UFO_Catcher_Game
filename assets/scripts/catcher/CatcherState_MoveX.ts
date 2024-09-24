@@ -1,4 +1,3 @@
-import BallsControl from '../Balls/BallsControl'
 import Data from '../data/Data'
 import FSMState from '../utility/FSMState'
 import CatcherControl from './CatcherControl'
@@ -19,20 +18,10 @@ export default class CatcherState_MoveX extends FSMState {
 
     this.catcherControl = this.component as CatcherControl
 
-    this.moveParts.push(
-      this.catcherControl.catcherBar,
-      this.catcherControl.catcherBody,
-      this.catcherControl.catcherForkLeft,
-      this.catcherControl.catcherForkRight
-    )
+    this.addPartsToMove()
 
     this.listenHanlder()
     this.listenButton()
-
-    // BallsControl.Instance.initializeBalls()
-    // cc.find('BallsControl').getComponent(BallsControl).initializeBalls()
-    console.log(BallsControl.Instance)
-    console.log(cc.find('BallsControl').getComponent(BallsControl))
   }
   onUpdate(dt: any): void {
     super.onUpdate(dt)
@@ -45,6 +34,17 @@ export default class CatcherState_MoveX extends FSMState {
     super.onExit()
 
     this.stopAllListen()
+  }
+
+  addPartsToMove() {
+    this.moveParts = []
+    this.moveParts.push(
+      this.catcherControl.catcherBar,
+      this.catcherControl.catcherBody,
+      this.catcherControl.catcherForkLeft,
+      this.catcherControl.catcherForkRight,
+      this.catcherControl.settleCollision
+    )
   }
 
   listenHanlder() {

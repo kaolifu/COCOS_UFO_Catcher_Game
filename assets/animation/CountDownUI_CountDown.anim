@@ -1,0 +1,143 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "CountDownUI_CountDown",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2.0833333333333335,
+  "sample": 12,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "countDown3": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": true
+            },
+            {
+              "frame": 0.5833333333333334,
+              "value": false
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 2,
+                "y": 2,
+                "z": 1
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          ]
+        }
+      },
+      "countDown2": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": false
+            },
+            {
+              "frame": 0.5833333333333334,
+              "value": true
+            },
+            {
+              "frame": 1.0833333333333333,
+              "value": false
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0.5833333333333334,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 2,
+                "y": 2,
+                "z": 1
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          ]
+        }
+      },
+      "countDown1": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": false
+            },
+            {
+              "frame": 1.0833333333333333,
+              "value": true
+            },
+            {
+              "frame": 1.5833333333333333,
+              "value": false
+            }
+          ],
+          "scale": [
+            {
+              "frame": 1.0833333333333333,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 2,
+                "y": 2,
+                "z": 1
+              }
+            },
+            {
+              "frame": 1.5,
+              "value": {
+                "__type__": "cc.Vec3",
+                "x": 1,
+                "y": 1,
+                "z": 1
+              }
+            }
+          ]
+        }
+      },
+      "countDownStart": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": false
+            },
+            {
+              "frame": 1.5833333333333333,
+              "value": true
+            },
+            {
+              "frame": 2.0833333333333335,
+              "value": false
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

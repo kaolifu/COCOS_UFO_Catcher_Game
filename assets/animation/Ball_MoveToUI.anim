@@ -1,0 +1,35 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "Ball_MoveToUI",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.25,
+  "sample": 12,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "y": [
+        {
+          "frame": 0,
+          "value": 366.756
+        },
+        {
+          "frame": 0.25,
+          "value": 1146.683
+        }
+      ],
+      "opacity": [
+        {
+          "frame": 0.16666666666666666,
+          "value": 255
+        },
+        {
+          "frame": 0.25,
+          "value": 0
+        }
+      ]
+    }
+  },
+  "events": []
+}

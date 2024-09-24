@@ -18,7 +18,9 @@ export default class FSMState {
     this.fsmManager = fsmManager
   }
 
-  onEnter() {}
+  onEnter() {
+    console.log(this.component.name + ' enter state ' + this.stateID)
+  }
   onUpdate(dt) {}
   onExit() {}
 }

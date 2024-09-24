@@ -21,6 +21,11 @@ export default class CatcherState_MoveY extends FSMState {
   }
 
   playCatchAnimation() {
-    this.catcherControl.catcher.getComponent(cc.Animation).play('Catcher_Catch')
+    let anim = this.catcherControl.catcher.getComponent(cc.Animation)
+    anim.play('Catcher_Catch')
+    anim.on('finished', () => {
+      this.catcherControl.changeToSettleState()
+      anim.off('finished')
+    })
   }
 }

@@ -27,6 +27,8 @@ export default class CatcherControl extends cc.Component {
   @property(cc.Node)
   catcherForkRight: cc.Node = null
   @property(cc.Node)
+  settleCollision: cc.Node = null
+  @property(cc.Node)
   handler: cc.Node = null
   @property(cc.Node)
   button: cc.Node = null
