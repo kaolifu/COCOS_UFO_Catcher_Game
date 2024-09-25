@@ -26,7 +26,7 @@ export default class BallManager extends cc.Component {
     ballNode.x = Math.random() * 900 - 450
     ballNode.y = Math.random() * 450 - 225
 
-    const ballData = Data.ballData
+    const ballData = Data.ballDataInThisGame
     const amountPercent = ballData.reduce(
       (prev, curr) => prev + curr.percent,
       0
@@ -35,16 +35,23 @@ export default class BallManager extends cc.Component {
     for (let i = 0; i < ballData.length; i++) {
       randomNum -= ballData[i].percent
       if (randomNum <= 0) {
+        let ballInfo = ballNode.getComponent(BallInfo)
+
         ballNode.getChildByName('image').getComponent(cc.Sprite).spriteFrame =
           ballData[i].spriteFrame
-        ballNode.getComponent(BallInfo).ballName = ballData[i].ballName
-        ballNode.getComponent(BallInfo).score = ballData[i].score
-        ballNode.getComponent(BallInfo).rarity = false
+
+        ballInfo.ballName = ballData[i].ballName
+        ballInfo.type = ballData[i].type
+        ballInfo.score = ballData[i].score
+        ballInfo.rarity = false
         if (randomNum > -ballData[i].percent * ballData[i].rarityPercent) {
-          ballNode.getComponent(BallInfo).rarity = true
-          ballNode.getComponent(BallInfo).score *= ballData[i].rarityMultiplier
+          ballInfo.rarity = true
+          ballInfo.score *= ballData[i].rarityMultiplier
           ballNode.scale = 1.5
         }
+        ballNode.getChildByName('score').getComponent(cc.Label).string = (
+          '+' + ballInfo.score
+        ).toString()
         break
       }
     }
@@ -56,5 +63,9 @@ export default class BallManager extends cc.Component {
 
   clearCaughtBallsThisRound() {
     this.caughtBallsThisRound = []
+  }
+
+  resetBallData() {
+    Data.ballDataInThisGame = Data.ballData.map((item) => ({ ...item }))
   }
 }

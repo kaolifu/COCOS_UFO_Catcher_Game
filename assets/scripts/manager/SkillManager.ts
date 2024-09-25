@@ -1,4 +1,4 @@
-import Data, { SkillData } from '../data/Data'
+import Data, { BallData, SkillData } from '../data/Data'
 
 const { ccclass, property } = cc._decorator
 
@@ -13,7 +13,17 @@ export default class SkillManager {
   }
 
   private currentSkillId: string
+  public set CurrentSkillId(id: string) {
+    this.currentSkillId = id
+  }
+  public get CurrentSkillId(): string {
+    return this.currentSkillId
+  }
+
   private skillsInThisGame: SkillData[] = []
+  public get SkillsInThisGame(): SkillData[] {
+    return this.skillsInThisGame
+  }
 
   public getThreeRandomSkillIds(): string[] {
     let skillData = [...Data.skillData]
@@ -38,22 +48,25 @@ export default class SkillManager {
     return results
   }
 
-  public set CurrentSkillId(id: string) {
-    this.currentSkillId = id
-  }
-  public get CurrentSkillId(): string {
-    return this.currentSkillId
-  }
-
   public setSkillsInThisGame(id: string) {
-    let skill = Data.skillData.find((skill: SkillData) => skill.id == id)
-
-    if (skill) {
-      this.skillsInThisGame.push(skill)
-      console.log('添加技能成功，持有技能:')
-      console.log(this.skillsInThisGame)
+    let result = this.skillsInThisGame.find(
+      (skill: SkillData) => skill.id == id
+    )
+    if (result) {
+      result.level++
     } else {
-      console.log('添加技能失败')
+      let skill = Data.skillData.find((skill: SkillData) => skill.id == id)
+      if (skill) {
+        this.skillsInThisGame.push(skill)
+      } else {
+        console.log('未找到技能')
+      }
     }
+  }
+
+  public applyAllSkillEffect() {
+    this.skillsInThisGame.forEach((skill: SkillData) => {
+      skill.effect(skill.level)
+    })
   }
 }

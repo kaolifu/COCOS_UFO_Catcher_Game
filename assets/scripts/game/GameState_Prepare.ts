@@ -1,4 +1,5 @@
 import CatcherControl from '../catcher/CatcherControl'
+import BallManager from '../manager/BallManager'
 import CoinManager from '../manager/CoinManager'
 import SkillManager from '../manager/SkillManager'
 import StageManager from '../manager/StageManager'
@@ -32,6 +33,8 @@ export default class GameState_Prepare extends FSMState {
     uiManager.updateStageUI(currentStage)
 
     uiManager.updateCoinCostUI(CoinManager.Instance.CoinCost)
+
+    this.component.getComponent(BallManager).resetBallData()
   }
   onUpdate(dt: any): void {
     super.onUpdate(dt)

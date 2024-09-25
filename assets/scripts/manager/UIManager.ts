@@ -134,6 +134,7 @@ export default class UIManager extends cc.Component {
     ;(skillInfo.id = skill.id),
       (skillInfo.skillName = skill.skillName),
       (skillInfo.desc = skill.desc),
+      (skillInfo.level = skill.level),
       (skillInfo.spriteFrame = skill.spriteFrame),
       (skillInfo.rarity = skill.rarity),
       (skillInfo.rarityColor = skill.rarityColor),

@@ -10,7 +10,7 @@ export default class TimeManager {
     return this._instance
   }
 
-  roundTime: number = 3
+  roundTime: number = 15
   timer: number = 0
   timerId: number = 0
   remainTime: number = this.roundTime - this.timer
