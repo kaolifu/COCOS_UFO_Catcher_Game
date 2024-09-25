@@ -1,6 +1,6 @@
 const { ccclass, property } = cc._decorator
 
-interface BallData {
+export interface BallData {
   id: string
   ballName: string
   score: number
@@ -9,10 +9,22 @@ interface BallData {
   rarityMultiplier: number
   spriteFrame: cc.SpriteFrame
 }
+export interface SkillData {
+  id: string
+  skillName: string
+  desc: string
+  spriteFrame: cc.SpriteFrame
+  rarity: string
+  rarityColor: cc.Color
+  percent: number
+  effect: () => void
+}
 
 @ccclass
 export default class Data {
   public static ballData: BallData[] = []
+  public static skillData: SkillData[] = []
+
   public static loadResource(path: string): Promise<cc.SpriteFrame> {
     return new Promise((resolve, reject) => {
       cc.loader.loadRes(path, cc.SpriteFrame, (err, resource) => {
@@ -35,7 +47,12 @@ export default class Data {
       const coinBronzeSpriteFrame = await this.loadResource(
         'Images/Icons/coin-bronze'
       )
+      const coinGoldSpriteFrame = await this.loadResource(
+        'Images/Icons/coin-gold'
+      )
+      const egg1SpriteFrame = await this.loadResource('Images/Icons/egg1')
       const bombSpriteFrame = await this.loadResource('Images/Icons/bomb')
+      const timeSpriteFrame = await this.loadResource('Images/Icons/Timer')
 
       this.ballData = [
         {
@@ -82,6 +99,49 @@ export default class Data {
           rarityPercent: 0,
           rarityMultiplier: 0,
           spriteFrame: bombSpriteFrame,
+        },
+      ]
+
+      this.skillData = [
+        {
+          id: '1',
+          skillName: '水果类等级+1',
+          desc: '水果类宝物的出现概率 + 5%<br/>水果类宝物的金币 + 1',
+          spriteFrame: appleSpriteFrame,
+          rarity: '普通',
+          rarityColor: new cc.Color(40, 184, 66, 255),
+          percent: 20,
+          effect: () => {},
+        },
+        {
+          id: '2',
+          skillName: '金币类等级+1',
+          desc: '金币类宝物的出现概率 + 5%',
+          spriteFrame: coinGoldSpriteFrame,
+          rarity: '普通',
+          rarityColor: new cc.Color(40, 184, 66, 255),
+          percent: 20,
+          effect: () => {},
+        },
+        {
+          id: '3',
+          skillName: '计时器等级+1',
+          desc: '有概率出现计时器<br/>可增加游戏时间',
+          spriteFrame: timeSpriteFrame,
+          rarity: '珍稀',
+          rarityColor: new cc.Color(40, 89, 184, 255),
+          percent: 10,
+          effect: () => {},
+        },
+        {
+          id: '4',
+          skillName: '恐龙蛋等级+1',
+          desc: '每局游戏会有小恐龙吐出恐龙蛋',
+          spriteFrame: egg1SpriteFrame,
+          rarity: '珍稀',
+          rarityColor: new cc.Color(40, 89, 184, 255),
+          percent: 10,
+          effect: () => {},
         },
       ]
     } catch (error) {

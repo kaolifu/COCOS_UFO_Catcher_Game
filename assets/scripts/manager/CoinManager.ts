@@ -1,3 +1,5 @@
+import StageManager from './StageManager'
+
 const { ccclass, property } = cc._decorator
 
 @ccclass
@@ -13,6 +15,12 @@ export default class CoinManager {
   private _coin: number = 0
   public get Coin(): number {
     return this._coin
+  }
+  public get CoinCost(): number {
+    return (
+      (StageManager.Instance.StageLg - 1) * 100 +
+      (StageManager.Instance.StageSm - 1) * 10
+    )
   }
   public addCoin(coin: number) {
     this._coin += coin

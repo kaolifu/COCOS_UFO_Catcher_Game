@@ -1,3 +1,4 @@
+import SkillManager from '../manager/SkillManager'
 import UIManager from '../manager/UIManager'
 import FSMManager from '../utility/FSMManager'
 import GameState_Playing from './GameState_Playing'
@@ -36,7 +37,7 @@ export default class GameControl extends cc.Component {
     )
     this.fsmManager.StateList.push(prepareState, playingState, roundOverState)
 
-    this.fsmManager.changeState(GameState.PrePare)
+    // this.fsmManager.changeState(GameState.PrePare)
   }
 
   update(dt) {
@@ -54,6 +55,10 @@ export default class GameControl extends cc.Component {
   }
 
   onSkillConfirmBtnClick() {
+    SkillManager.Instance.setSkillsInThisGame(
+      SkillManager.Instance.CurrentSkillId
+    )
+
     this.node.getComponent(UIManager).hideSkillSelectUI()
     this.changeToPlayingState()
   }

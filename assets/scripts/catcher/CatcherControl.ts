@@ -68,7 +68,7 @@ export default class CatcherControl extends cc.Component {
       settleState
     )
 
-    this.fsmManager.changeState(CatcherState.Disabled)
+    // this.fsmManager.changeState(CatcherState.Disabled)
   }
 
   update(dt) {
