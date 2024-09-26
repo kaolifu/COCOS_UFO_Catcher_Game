@@ -15,7 +15,7 @@ export default class BallManager extends cc.Component {
   // update (dt) {}
 
   createBalls() {
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < 90; i++) {
       this.instantiateBall()
     }
   }

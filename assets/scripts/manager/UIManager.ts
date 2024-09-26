@@ -1,5 +1,5 @@
 import BallInfo from '../ball/BallInfo'
-import Data from '../data/Data'
+import Data, { SkillData } from '../data/Data'
 import SkillInfo from '../skill/SkillInfo'
 import BallManager from './BallManager'
 
@@ -33,6 +33,10 @@ export default class UIManager extends cc.Component {
   HeartPerfab: cc.Prefab = null
   @property(cc.SpriteAtlas)
   HeartAtlas: cc.SpriteAtlas = null
+  @property(cc.Node)
+  SkillInThisGameList: cc.Node = null
+  @property(cc.Prefab)
+  SkillInThisGamePerfab: cc.Prefab = null
 
   start() {}
 
@@ -129,12 +133,24 @@ export default class UIManager extends cc.Component {
     skillUI.getChildByName('skillName').getComponent(cc.Label).string =
       skill.skillName
     skillUI.getChildByName('desc').getComponent(cc.RichText).string = skill.desc
-    skillUI.getChildByName('rarity').getChildByName('bg').color =
-      skill.rarityColor
     skillUI
       .getChildByName('rarity')
       .getChildByName('content')
       .getComponent(cc.Label).string = skill.rarity
+    switch (skill.rarity) {
+      case '普通':
+        skillUI.getChildByName('rarity').getChildByName('bg').color =
+          new cc.Color(40, 184, 66, 255)
+        break
+      case '珍稀':
+        skillUI.getChildByName('rarity').getChildByName('bg').color =
+          new cc.Color(40, 89, 184, 255)
+        break
+      case '传奇':
+        skillUI.getChildByName('rarity').getChildByName('bg').color =
+          new cc.Color(255, 165, 0, 255)
+        break
+    }
 
     let skillInfo = skillUI.getComponent(SkillInfo)
     ;(skillInfo.id = skill.id),
@@ -143,7 +159,6 @@ export default class UIManager extends cc.Component {
       (skillInfo.level = skill.level),
       (skillInfo.spriteFrame = skill.spriteFrame),
       (skillInfo.rarity = skill.rarity),
-      (skillInfo.rarityColor = skill.rarityColor),
       (skillInfo.percent = skill.percent),
       (skillInfo.effect = skill.effect)
   }
@@ -153,6 +168,8 @@ export default class UIManager extends cc.Component {
   }
 
   updateHeartUI(currentHeart: number, maxHeart: number) {
+    this.HeartUI.removeAllChildren()
+
     let maxHeartCount = Math.floor(maxHeart / 4)
     let maxHeartSm = maxHeart % 4
 
@@ -181,5 +198,20 @@ export default class UIManager extends cc.Component {
         cc.Sprite
       ).spriteFrame = this.HeartAtlas.getSpriteFrame(`heart${currentHeartSm}`)
     }
+  }
+
+  updateSkillInThisGameList(skill: SkillData) {
+    let SkillInThisGameNode = cc.instantiate(this.SkillInThisGamePerfab)
+    SkillInThisGameNode.parent = this.SkillInThisGameList
+
+    SkillInThisGameNode.getChildByName('icon').getComponent(
+      cc.Sprite
+    ).spriteFrame = skill.spriteFrame
+    SkillInThisGameNode.getChildByName('content').getComponent(
+      cc.RichText
+    ).string = `<outline color=#550000 width=2>${skill.level.toString()}</outline>`
+  }
+  clearSkillInThisGameList() {
+    this.SkillInThisGameList.removeAllChildren()
   }
 }

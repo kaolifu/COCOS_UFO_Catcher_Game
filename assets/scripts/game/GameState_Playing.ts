@@ -18,12 +18,21 @@ export default class GameState_Playing extends FSMState {
     let bm = this.component.node.getComponent(BallManager)
     let ccontrol = this.component.node.getComponent(CatcherControl)
 
+    let skillsInThisGame = SkillManager.Instance.SkillsInThisGame
+    um.clearSkillInThisGameList()
+    for (let skill of skillsInThisGame) {
+      um.updateSkillInThisGameList(skill)
+    }
+
     ccontrol.initCatcherPosition()
     bm.clearBallsInBox()
 
     SkillManager.Instance.applyAllSkillEffect()
-    console.log(Data.ballDataInThisGame)
-    console.log(Data.ballData)
+    
+    let currentBallData = Data.ballDataInThisGame.filter(
+      (ballData) => ballData.percent > 0
+    )
+    console.log(currentBallData)
 
     um.showCountDownUI()
     um.countDownUI.getComponent(cc.Animation).on('finished', () => {

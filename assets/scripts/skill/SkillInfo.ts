@@ -10,7 +10,6 @@ export default class SkillInfo extends cc.Component {
   desc: string
   spriteFrame: cc.SpriteFrame
   rarity: string
-  rarityColor: cc.Color
   percent: number
   effect: (level: number) => void
 

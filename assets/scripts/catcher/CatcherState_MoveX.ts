@@ -37,8 +37,7 @@ export default class CatcherState_MoveX extends FSMState {
     super.onExit()
 
     this.stopAllListen()
-    this.catcherControl.button.getComponent(cc.Animation).setCurrentTime(0)
-    this.catcherControl.button.getComponent(cc.Animation).stop()
+    this.stopAnimation()
   }
 
   addPartsToMove() {
@@ -95,5 +94,12 @@ export default class CatcherState_MoveX extends FSMState {
     this.catcherControl.handler.off(cc.Node.EventType.TOUCH_END)
     this.catcherControl.handler.off(cc.Node.EventType.TOUCH_CANCEL)
     this.catcherControl.button.getComponent(cc.Button).interactable = false
+  }
+
+  stopAnimation() {
+    this.catcherControl.button.getComponent(cc.Animation).setCurrentTime(0)
+    this.catcherControl.button.getComponent(cc.Animation).stop()
+    this.horizontal = 0
+    this.catcherControl.handler.angle = 0
   }
 }
