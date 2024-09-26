@@ -27,6 +27,12 @@ export default class UIManager extends cc.Component {
   StageUI: cc.Node = null
   @property(cc.Node)
   CoinCostUI: cc.Node = null
+  @property(cc.Node)
+  HeartUI: cc.Node = null
+  @property(cc.Prefab)
+  HeartPerfab: cc.Prefab = null
+  @property(cc.SpriteAtlas)
+  HeartAtlas: cc.SpriteAtlas = null
 
   start() {}
 
@@ -144,5 +150,36 @@ export default class UIManager extends cc.Component {
 
   clearSkillList() {
     this.skillSelectUI.getChildByName('SkillList').removeAllChildren()
+  }
+
+  updateHeartUI(currentHeart: number, maxHeart: number) {
+    let maxHeartCount = Math.floor(maxHeart / 4)
+    let maxHeartSm = maxHeart % 4
+
+    for (let i = 0; i < maxHeartCount; i++) {
+      let heartNode = cc.instantiate(this.HeartPerfab)
+      heartNode.parent = this.HeartUI
+    }
+    if (maxHeartSm != 0) {
+      let heartNode = cc.instantiate(this.HeartPerfab)
+      heartNode.parent = this.HeartUI
+      heartNode.children[0].getComponent(cc.Sprite).spriteFrame =
+        this.HeartAtlas.getSpriteFrame(`heart-bg${maxHeartSm}`)
+      heartNode.children[2].getComponent(cc.Sprite).spriteFrame =
+        this.HeartAtlas.getSpriteFrame(`heart-border${maxHeartSm}`)
+    }
+
+    let currentHeartCount = Math.floor(currentHeart / 4)
+    let currentHeartSm = currentHeart % 4
+
+    for (let i = 0; i < currentHeartCount; i++) {
+      this.HeartUI.children[i].children[1].getComponent(cc.Sprite).spriteFrame =
+        this.HeartAtlas.getSpriteFrame(`heart4`)
+    }
+    if (currentHeartSm != 0) {
+      this.HeartUI.children[currentHeartCount].children[1].getComponent(
+        cc.Sprite
+      ).spriteFrame = this.HeartAtlas.getSpriteFrame(`heart${currentHeartSm}`)
+    }
   }
 }

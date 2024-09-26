@@ -55,7 +55,8 @@ export default class Data {
       )
       const egg1SpriteFrame = await this.loadResource('Images/Icons/egg1')
       const bombSpriteFrame = await this.loadResource('Images/Icons/bomb')
-      const timeSpriteFrame = await this.loadResource('Images/Icons/Timer')
+      const timeSpriteFrame = await this.loadResource('Images/Icons/time')
+      const shieldSpriteFrame = await this.loadResource('Images/Icons/shield')
 
       this.ballData = [
         {
@@ -132,25 +133,39 @@ export default class Data {
         },
         {
           id: '2',
+          skillName: '水果类品质+1',
+          level: 1,
+          desc: '水果类大宝物的出现概率 + 5%',
+          spriteFrame: appleSpriteFrame,
+          rarity: '珍稀',
+          rarityColor: new cc.Color(40, 89, 184, 255),
+          percent: 10,
+          effect: (level: number) => {
+            let results = this.ballDataInThisGame.filter(
+              (item) => item.type === 'fruit'
+            )
+            results.forEach((item) => {
+              item.rarityPercent += 0.05 * level
+            })
+          },
+        },
+        {
+          id: '3',
           skillName: '金币类等级+1',
           level: 1,
-          desc: '金币类宝物的出现概率 + 5%',
+          desc: '水果类宝物的出现概率 + 5%',
           spriteFrame: coinGoldSpriteFrame,
           rarity: '普通',
           rarityColor: new cc.Color(40, 184, 66, 255),
           percent: 20,
-          effect: () => {},
-        },
-        {
-          id: '3',
-          skillName: '计时器等级+1',
-          level: 1,
-          desc: '有概率出现计时器<br/>可增加游戏时间',
-          spriteFrame: timeSpriteFrame,
-          rarity: '珍稀',
-          rarityColor: new cc.Color(40, 89, 184, 255),
-          percent: 10,
-          effect: () => {},
+          effect: (level: number) => {
+            let results = this.ballDataInThisGame.filter(
+              (item) => item.type === 'coin'
+            )
+            results.forEach((item) => {
+              item.percent += 5 * level
+            })
+          },
         },
         {
           id: '4',

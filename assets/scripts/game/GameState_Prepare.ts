@@ -1,6 +1,7 @@
 import CatcherControl from '../catcher/CatcherControl'
 import BallManager from '../manager/BallManager'
 import CoinManager from '../manager/CoinManager'
+import HeartManager from '../manager/HeartManager'
 import SkillManager from '../manager/SkillManager'
 import StageManager from '../manager/StageManager'
 import TimeManager from '../manager/TimeManager'
@@ -25,6 +26,10 @@ export default class GameState_Prepare extends FSMState {
       uiManager.instantiateSkillUI(id)
     }
 
+    uiManager.updateHeartUI(
+      HeartManager.Instance.CurrentHeart,
+      HeartManager.Instance.MaxHeart
+    )
     uiManager.updateCoinUI(CoinManager.Instance.Coin)
     uiManager.updateTimerUI(TimeManager.Instance.roundTime)
 
