@@ -62,7 +62,7 @@ export default class Data {
       const chickenG = await this.loadResource('Images/Icons/chicken-gold')
 
       const egg = await this.loadResource('Images/Icons/egg')
-      const time = await this.loadResource('Images/Icons/time')
+      const time = await this.loadResource('Images/Icons/time0')
       const shield = await this.loadResource('Images/Icons/shield')
       const bomb = await this.loadResource('Images/Icons/bomb')
 

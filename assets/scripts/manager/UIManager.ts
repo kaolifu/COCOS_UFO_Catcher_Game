@@ -118,8 +118,9 @@ export default class UIManager extends cc.Component {
   }
 
   updateCoinCostUI(coin: number) {
-    this.CoinCostUI.getChildByName('content').getComponent(cc.Label).string =
-      coin.toString()
+    this.CoinCostUI.getChildByName('content').getComponent(
+      cc.RichText
+    ).string = `<outline color=#000000 width=4>${coin.toString()}</outline>`
   }
 
   instantiateSkillUI(skillId: string) {
@@ -130,9 +131,16 @@ export default class UIManager extends cc.Component {
     skillUI.parent = skillList
     skillUI.getChildByName('icon').getComponent(cc.Sprite).spriteFrame =
       skill.spriteFrame
-    skillUI.getChildByName('skillName').getComponent(cc.Label).string =
-      skill.skillName
-    skillUI.getChildByName('desc').getComponent(cc.RichText).string = skill.desc
+    skillUI
+      .getChildByName('skillName')
+      .getComponent(
+        cc.RichText
+      ).string = `<outline color=#000000 width=8>${skill.skillName}</outline>`
+    skillUI
+      .getChildByName('desc')
+      .getComponent(
+        cc.RichText
+      ).string = `<outline color=#000000 width=8>${skill.desc}</outline>`
     skillUI
       .getChildByName('rarity')
       .getChildByName('content')

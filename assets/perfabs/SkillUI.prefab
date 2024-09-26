@@ -112,9 +112,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 152,
-      "g": 152,
-      "b": 152,
+      "r": 176,
+      "g": 95,
+      "b": 115,
       "a": 255
     },
     "_contentSize": {
@@ -226,8 +226,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
-      "height": 150
+      "width": 120,
+      "height": 120
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -238,8 +238,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -364.111,
-        90.294,
+        -355.949,
+        82.132,
         0,
         0,
         0,
@@ -326,27 +326,27 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 549,
-      "height": 121
+      "width": 439,
+      "height": 80.64
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        4,
-        85,
+        -265.657,
+        79.774,
         0,
         0,
         0,
@@ -371,38 +371,26 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.RichText",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 8
     },
     "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_string": "水果类等级+1",
-    "_N$string": "水果类等级+1",
-    "_fontSize": 80,
-    "_lineHeight": 96,
-    "_enableWrapText": true,
-    "_N$file": {
+    "_fontFamily": "Arial",
+    "_isSystemFontUsed": false,
+    "_N$string": "<outline color=#000000 width=8>水果类等级+1</outline>",
+    "_N$horizontalAlign": 0,
+    "_N$fontSize": 72,
+    "_N$font": {
       "__uuid__": "9f9a6c1e-76f7-432f-a8b1-4fc009e94967"
     },
-    "_isSystemFontUsed": false,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_styleFlags": 0,
-    "_underlineHeight": 0,
-    "_N$horizontalAlign": 0,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 1,
     "_N$cacheMode": 0,
+    "_N$maxWidth": 0,
+    "_N$lineHeight": 64,
+    "_N$imageAtlas": null,
+    "_N$handleTouchEvent": true,
     "_id": ""
   },
   {
@@ -413,7 +401,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "7aY5ehwAVGuLOuGVRkX+AL",
+    "fileId": "f2UPxVlrJBUr9CTBSTAwoZ",
     "sync": false
   },
   {
@@ -436,14 +424,14 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 765,
+      "width": 781,
       "height": 162.71999999999997
     },
     "_anchorPoint": {
@@ -490,7 +478,7 @@
     "_enabled": true,
     "_fontFamily": "Arial",
     "_isSystemFontUsed": false,
-    "_N$string": "水果类宝物的出现概率 + 5%<br/>水果类宝物的金币 + 1",
+    "_N$string": "<outline color=#000000 width=8>水果类宝物的出现概率 + 5%<br/>水果类宝物的金币 + 1</outline>",
     "_N$horizontalAlign": 0,
     "_N$fontSize": 60,
     "_N$font": {
@@ -557,7 +545,7 @@
       "ctor": "Float64Array",
       "array": [
         352.904,
-        82.003,
+        77.793,
         0,
         0,
         0,
