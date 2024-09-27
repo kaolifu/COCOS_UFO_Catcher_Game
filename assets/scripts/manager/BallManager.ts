@@ -2,6 +2,7 @@ import BallInfo from '../ball/BallInfo'
 import CatcherControl from '../catcher/CatcherControl'
 import Data from '../data/Data'
 import HeartManager from './HeartManager'
+import SoundManager from './SoundManager'
 import TimeManager from './TimeManager'
 import UIManager from './UIManager'
 
@@ -106,13 +107,17 @@ export default class BallManager extends cc.Component {
   settleTimeBall(ball: cc.Node) {
     TimeManager.Instance.addRemainTime(1)
     this.node.getComponent(UIManager).playTimerUIAddTimeAnimation()
-    ball.removeFromParent(true)
+    ball.destroy()
+
+    SoundManager.Instance.playEffectSound('caughtTime')
   }
 
   settleFoodBall(ball: cc.Node) {
     HeartManager.Instance.addCurrentHeart(ball.getComponent(BallInfo).heal)
     this.node.getComponent(UIManager).updateHeartUI()
     this.node.getComponent(UIManager).playHeartUIHealAnim()
+
+    SoundManager.Instance.playEffectSound('heal')
   }
 
   settleAnimalBall(ball: cc.Node) {
@@ -131,10 +136,25 @@ export default class BallManager extends cc.Component {
     this.node.getComponent(CatcherControl).playAnimalAnim()
 
     this.scheduleOnce(() => {
+      SoundManager.Instance.playEffectSound('chicken')
+
       let animalBalls = this.caughtAnimalBallsThisRound
       for (let ball of animalBalls) {
         let ballClone = cc.instantiate(ball)
         ballClone.parent = this.node
+
+        let originalInfo = ball.getComponent(BallInfo)
+        let clonedInfo = ballClone.getComponent(BallInfo)
+
+        if (originalInfo && clonedInfo) {
+          clonedInfo.ballName = originalInfo.ballName
+          clonedInfo.type = originalInfo.type
+          clonedInfo.score = originalInfo.score
+          clonedInfo.heal = originalInfo.heal
+          clonedInfo.rarity = originalInfo.rarity
+          clonedInfo.spirteFrame = originalInfo.spirteFrame // 确保使用正确的属性名
+        }
+
         ballClone.getComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic
         ballClone.scale = 1
         ballClone.x = -130
@@ -155,5 +175,7 @@ export default class BallManager extends cc.Component {
       ball.getComponent(cc.Animation).play('Ball_Rarity')
 
     ball.parent = this.node.getComponent(UIManager).caughtBallList
+
+    SoundManager.Instance.playEffectSound('caughtBall')
   }
 }

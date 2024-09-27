@@ -1,8 +1,8 @@
 import CatcherControl from '../catcher/CatcherControl'
 import BallManager from '../manager/BallManager'
 import CoinManager from '../manager/CoinManager'
-import HeartManager from '../manager/HeartManager'
 import SkillManager from '../manager/SkillManager'
+import SoundManager from '../manager/SoundManager'
 import StageManager from '../manager/StageManager'
 import TimeManager from '../manager/TimeManager'
 import UIManager from '../manager/UIManager'
@@ -14,6 +14,9 @@ const { ccclass, property } = cc._decorator
 export default class GameState_Prepare extends FSMState {
   onEnter(): void {
     super.onEnter()
+
+    SoundManager.Instance.playBGM('playingBGM')
+
     let uiManager = this.component.getComponent(UIManager)
 
     this.component.getComponent(CatcherControl).changeToDisabledState()

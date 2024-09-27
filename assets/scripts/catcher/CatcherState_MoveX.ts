@@ -1,3 +1,4 @@
+import SoundManager from '../manager/SoundManager'
 import FSMState from '../utility/FSMState'
 import CatcherControl from './CatcherControl'
 import CatcherFork from './CatcherFork'
@@ -14,10 +15,15 @@ export default class CatcherState_MoveX extends FSMState {
 
   isButtonLighting: boolean = false
 
+  isCatcherMoveEffectPlaying: boolean = false
+  catcherMoveEffectId = null
+
   onEnter(): void {
     super.onEnter()
 
     this.catcherControl = this.component as CatcherControl
+
+    this.isCatcherMoveEffectPlaying = false
 
     this.addPartsToMove()
 
@@ -29,6 +35,7 @@ export default class CatcherState_MoveX extends FSMState {
   onUpdate(dt: any): void {
     super.onUpdate(dt)
     this.checkWallDectected()
+
     if (this.horizontal != 0) {
       this.moveCatcher(dt)
     }
@@ -56,15 +63,34 @@ export default class CatcherState_MoveX extends FSMState {
       let deltaX = e.getDelta().x
       this.horizontal = deltaX > 0 ? 1 : deltaX < 0 ? -1 : 0
       this.catcherControl.handler.angle = 30 * -this.horizontal
+
+      this.playCatcherMoveEffect()
     })
     this.catcherControl.handler.on(cc.Node.EventType.TOUCH_END, (e) => {
       this.horizontal = 0
       this.catcherControl.handler.angle = 30 * -this.horizontal
+      this.stopCatcherMoveEffect()
     })
     this.catcherControl.handler.on(cc.Node.EventType.TOUCH_CANCEL, (e) => {
       this.horizontal = 0
       this.catcherControl.handler.angle = 30 * -this.horizontal
+      this.stopCatcherMoveEffect()
     })
+  }
+
+  playCatcherMoveEffect() {
+    if (this.isCatcherMoveEffectPlaying == false) {
+      this.isCatcherMoveEffectPlaying = true
+      SoundManager.Instance.playEffectSound('catcherMove', true, 0.3, (id) => {
+        this.catcherMoveEffectId = id
+      })
+    }
+  }
+  stopCatcherMoveEffect() {
+    if (this.isCatcherMoveEffectPlaying == true) {
+      this.isCatcherMoveEffectPlaying = false
+      SoundManager.Instance.stopEffectSound(this.catcherMoveEffectId)
+    }
   }
 
   checkWallDectected() {

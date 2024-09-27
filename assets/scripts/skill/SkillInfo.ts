@@ -13,7 +13,9 @@ export default class SkillInfo extends cc.Component {
   percent: number
   effect: (level: number) => void
 
-  // onLoad () {}
+
+  // onLoad() {
+  // }
 
   start() {
     if (this.getComponent(cc.Toggle).isChecked) {

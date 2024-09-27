@@ -1,3 +1,4 @@
+import SoundManager from '../manager/SoundManager'
 import FSMState from '../utility/FSMState'
 import CatcherControl from './CatcherControl'
 
@@ -7,9 +8,13 @@ const { ccclass, property } = cc._decorator
 export default class CatcherState_MoveY extends FSMState {
   catcherControl: CatcherControl
 
+  anim: cc.Animation
+  soundId: number = null
+
   onEnter(): void {
     super.onEnter()
     this.catcherControl = this.component as CatcherControl
+    this.anim = this.catcherControl.catcher.getComponent(cc.Animation)
 
     this.playCatchAnimation()
   }
@@ -18,14 +23,26 @@ export default class CatcherState_MoveY extends FSMState {
   }
   onExit(): void {
     super.onExit()
+
+    this.anim.stop('Catcher_Catch')
+    SoundManager.Instance.stopEffectSound(this.soundId)
   }
 
   playCatchAnimation() {
-    let anim = this.catcherControl.catcher.getComponent(cc.Animation)
-    anim.play('Catcher_Catch')
-    anim.on('finished', () => {
+    this.anim.play('Catcher_Catch')
+
+    SoundManager.Instance.playEffectSound(
+      'catcherMove',
+      true,
+      0.3,
+      (id: number) => {
+        this.soundId = id
+      }
+    )
+
+    this.anim.once('finished', () => {
       this.catcherControl.changeToSettleState()
-      anim.off('finished')
+      SoundManager.Instance.stopEffectSound(this.soundId)
     })
   }
 }

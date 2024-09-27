@@ -2,6 +2,7 @@ import BallInfo from '../ball/BallInfo'
 import CatcherControl from '../catcher/CatcherControl'
 import CoinManager from '../manager/CoinManager'
 import HeartManager from '../manager/HeartManager'
+import SoundManager from '../manager/SoundManager'
 import UIManager from '../manager/UIManager'
 import FSMState from '../utility/FSMState'
 import GameControl from './GameControl'
@@ -132,12 +133,14 @@ export default class GameState_RoundOver extends FSMState {
       if (ballInfo.ballName == 'bombBall') {
         animation.play('Ball_Explode')
         HeartManager.Instance.subCurrentHeart(1)
+        // SoundManager.Instance.playEffectSound('countDown')
       } else {
         animation.play('Ball_Explode2')
       }
 
       this.component.scheduleOnce(() => {
         this.uiManager.playHeartUIShakeAnim()
+        SoundManager.Instance.playEffectSound('explode', false, 0.2)
       }, 0.8)
 
       animation.once('finished', () => {
@@ -178,6 +181,9 @@ export default class GameState_RoundOver extends FSMState {
 
   playBombWarnAnim(callback?: Function): void {
     this.uiManager.showBombWarnUI()
+
+    SoundManager.Instance.playEffectSound('warning')
+
     this.uiManager.bombWarnUI
       .getComponent(cc.Animation)
       .once('finished', () => {
@@ -199,6 +205,8 @@ export default class GameState_RoundOver extends FSMState {
     ball.getComponent(cc.Animation).play('Ball_Settle')
     CoinManager.Instance.addCoin(ball.getComponent(BallInfo).score)
     this.uiManager.updateCoinUI(CoinManager.Instance.Coin)
+
+    SoundManager.Instance.playEffectSound('settleCoin')
 
     this.component.scheduleOnce(() => {
       if (index < balls.length - 1) {

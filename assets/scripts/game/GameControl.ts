@@ -1,4 +1,5 @@
 import SkillManager from '../manager/SkillManager'
+import SoundManager from '../manager/SoundManager'
 import UIManager from '../manager/UIManager'
 import FSMManager from '../utility/FSMManager'
 import GameState_Playing from './GameState_Playing'
@@ -58,6 +59,8 @@ export default class GameControl extends cc.Component {
     SkillManager.Instance.setSkillsInThisGame(
       SkillManager.Instance.CurrentSkillId
     )
+
+    SoundManager.Instance.playEffectSound('credit')
 
     this.node.getComponent(UIManager).hideSkillSelectUI()
     this.changeToPlayingState()

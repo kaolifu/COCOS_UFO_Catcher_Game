@@ -2,6 +2,7 @@ import CatcherControl from '../catcher/CatcherControl'
 import Data from '../data/Data'
 import BallManager from '../manager/BallManager'
 import SkillManager from '../manager/SkillManager'
+import SoundManager from '../manager/SoundManager'
 import TimeManager from '../manager/TimeManager'
 import UIManager from '../manager/UIManager'
 import FSMState from '../utility/FSMState'
@@ -39,6 +40,7 @@ export default class GameState_Playing extends FSMState {
     console.log(currentBallData)
 
     um.showCountDownUI()
+    SoundManager.Instance.playEffectSound('ready')
     um.countDownUI.getComponent(cc.Animation).on('finished', () => {
       um.hideCountDownUI()
       bm.createBalls()
@@ -60,13 +62,10 @@ export default class GameState_Playing extends FSMState {
       this.isPlaying = false
 
       TimeManager.Instance.stopTimer()
-      this.component.node
-        .getComponent(CatcherControl)
-        .catcher.getComponent(cc.Animation)
-        .stop()
       this.component.node.getComponent(CatcherControl).changeToDisabledState()
 
       this.component.node.getComponent(UIManager).showTimeOutUI()
+      SoundManager.Instance.playEffectSound('timeUp')
 
       this.component.scheduleOnce(() => {
         this.component.node.getComponent(UIManager).hideTimeOutUI()

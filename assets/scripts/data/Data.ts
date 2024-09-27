@@ -260,7 +260,7 @@ export default class Data {
           ballName: 'timeBall',
           type: 'special',
           score: 0,
-          percent: 1,
+          percent: 10,
           rarityPercent: 0,
           rarityMultiplier: 0,
           spriteFrame: time,

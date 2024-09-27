@@ -1,3 +1,4 @@
+import SoundManager from '../manager/SoundManager'
 import FSMManager from '../utility/FSMManager'
 import CatcherState_Disabled from './CatcherState_Disabled'
 import CatcherState_MoveX from './CatcherState_MoveX'
@@ -96,6 +97,8 @@ export default class CatcherControl extends cc.Component {
 
   onButtonClick() {
     this.changeToMoveYState()
+
+    SoundManager.Instance.playEffectSound('tap')
   }
 
   playAnimalAnim() {
