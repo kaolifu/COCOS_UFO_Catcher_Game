@@ -125,7 +125,7 @@ export default class Data {
           ballName: 'bombBall',
           type: 'bomb',
           score: 0,
-          percent: 10,
+          percent: 5,
           rarityPercent: 0,
           rarityMultiplier: 0,
           spriteFrame: bomb,

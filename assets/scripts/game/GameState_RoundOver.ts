@@ -1,6 +1,7 @@
 import BallInfo from '../ball/BallInfo'
 import CatcherControl from '../catcher/CatcherControl'
 import CoinManager from '../manager/CoinManager'
+import HeartManager from '../manager/HeartManager'
 import UIManager from '../manager/UIManager'
 import FSMState from '../utility/FSMState'
 import GameControl from './GameControl'
@@ -29,7 +30,10 @@ export default class GameState_RoundOver extends FSMState {
         this.playBombWarnAnim(() => {
           let exploreBalls = this.calculateExploreBalls(caughtBalls)
           this.playExploreAnimSquance(0, exploreBalls, () => {
-            this.playSettleAnimSquance(caughtBalls, () => {
+            let settleBalls = caughtBalls.filter((ball) => {
+              return ball.opacity > 0
+            })
+            this.playSettleAnimSquance(0, settleBalls, () => {
               this.uiManager.clearCaughtBallListChildren()
               this.gameControl.changeToPrepareState()
             })
@@ -37,7 +41,7 @@ export default class GameState_RoundOver extends FSMState {
         })
       } else {
         // 做结算处理
-        this.playSettleAnimSquance(caughtBalls, () => {
+        this.playSettleAnimSquance(0, caughtBalls, () => {
           this.uiManager.clearCaughtBallListChildren()
           this.gameControl.changeToPrepareState()
         })
@@ -127,14 +131,23 @@ export default class GameState_RoundOver extends FSMState {
 
       if (ballInfo.ballName == 'bombBall') {
         animation.play('Ball_Explode')
+        HeartManager.Instance.subCurrentHeart(1)
       } else {
         animation.play('Ball_Explode2')
       }
+
+      this.component.scheduleOnce(() => {
+        this.uiManager.playHeartUIShakeAnim()
+      }, 0.8)
 
       animation.once('finished', () => {
         completedAnimations++
 
         if (completedAnimations === currentBalls.length) {
+          this.uiManager.updateHeartUI(
+            HeartManager.Instance.CurrentHeart,
+            HeartManager.Instance.MaxHeart
+          )
           this.playExploreAnimSquance(index + 1, balls, callback)
         }
       })
@@ -174,21 +187,30 @@ export default class GameState_RoundOver extends FSMState {
     })
   }
 
-  playSettleAnimSquance(balls: cc.Node[], callback?: Function): void {
-    let leftBalls = balls.filter((ball) => ball.opacity > 0)
-    if (leftBalls.length == 0) {
-      callback && callback()
+  playSettleAnimSquance(
+    index: number,
+    balls: cc.Node[],
+    callback?: Function
+  ): void {
+    if (index >= balls.length) {
       return
     }
 
-    let ball = leftBalls[0]
+    let ball = balls[index]
     ball.getComponent(cc.Animation).play('Ball_Settle')
     CoinManager.Instance.addCoin(ball.getComponent(BallInfo).score)
     this.uiManager.updateCoinUI(CoinManager.Instance.Coin)
 
-    ball.getComponent(cc.Animation).on('finished', () => {
-      ball.getComponent(cc.Animation).off('finished')
-      this.playSettleAnimSquance(balls, callback)
+    this.component.scheduleOnce(() => {
+      if (index < balls.length - 1) {
+        this.playSettleAnimSquance(index + 1, balls, callback)
+      }
+    }, 0.2)
+
+    ball.getComponent(cc.Animation).once('finished', () => {
+      if (index === balls.length - 1) {
+        callback && callback()
+      }
     })
   }
 

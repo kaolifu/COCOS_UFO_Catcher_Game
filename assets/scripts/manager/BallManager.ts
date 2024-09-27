@@ -49,9 +49,8 @@ export default class BallManager extends cc.Component {
           ballInfo.score *= ballData[i].rarityMultiplier
           ballNode.scale = 1.5
         }
-        ballNode.getChildByName('score').getComponent(cc.Label).string = (
-          '+' + ballInfo.score
-        ).toString()
+        ballNode.getChildByName('score').getComponent(cc.RichText).string =
+          `<outline color=#000000 width=2>+${ballInfo.score}</outline>`.toString()
         break
       }
     }

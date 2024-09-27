@@ -76,8 +76,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -379,
-        304.5,
+        -325,
+        -46,
         0,
         0,
         0,
@@ -449,8 +449,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
+      "width": 48,
+      "height": 48
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -556,8 +556,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 35,
-      "height": 50.4
+      "width": 62.73,
+      "height": 60.480000000000004
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -594,38 +594,24 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Label",
+    "__type__": "cc.RichText",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 14
     },
     "_enabled": true,
-    "_materials": [
-      {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
-      }
-    ],
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_string": "+1",
-    "_N$string": "+1",
-    "_fontSize": 40,
-    "_lineHeight": 40,
-    "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "d79085d3-afb5-4013-8f20-7f3e917a0e38"
-    },
-    "_isSystemFontUsed": false,
-    "_spacingX": 0,
-    "_batchAsBitmap": false,
-    "_styleFlags": 0,
-    "_underlineHeight": 0,
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 0,
+    "_fontFamily": "Arial",
+    "_isSystemFontUsed": true,
+    "_N$string": "<outline color=#000000 width=4>+1</outline>",
+    "_N$horizontalAlign": 0,
+    "_N$fontSize": 48,
+    "_N$font": null,
     "_N$cacheMode": 0,
+    "_N$maxWidth": 0,
+    "_N$lineHeight": 48,
+    "_N$imageAtlas": null,
+    "_N$handleTouchEvent": true,
     "_id": ""
   },
   {

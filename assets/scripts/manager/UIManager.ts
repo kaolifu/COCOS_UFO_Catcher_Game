@@ -207,6 +207,11 @@ export default class UIManager extends cc.Component {
       ).spriteFrame = this.HeartAtlas.getSpriteFrame(`heart${currentHeartSm}`)
     }
   }
+  playHeartUIShakeAnim() {
+    for (let heart of this.HeartUI.children) {
+      heart.getComponent(cc.Animation).play('HeartUI_Shake')
+    }
+  }
 
   updateSkillInThisGameList(skill: SkillData) {
     let SkillInThisGameNode = cc.instantiate(this.SkillInThisGamePerfab)

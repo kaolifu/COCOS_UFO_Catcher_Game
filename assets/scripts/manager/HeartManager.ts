@@ -10,16 +10,20 @@ export default class HeartManager {
     return this._instance
   }
 
-  private maxHeart = 4
+  private maxHeart = 20
   public get MaxHeart(): number {
     return this.maxHeart
   }
-  private currentHeart = 4
+  private currentHeart = 8
   public get CurrentHeart(): number {
     return this.currentHeart
   }
 
-  public subCurrentHeart() {
-    this.currentHeart--
+  public subCurrentHeart(damage: number) {
+    this.currentHeart -= damage
+
+    if (this.currentHeart < 0) {
+      this.currentHeart = 0
+    }
   }
 }
