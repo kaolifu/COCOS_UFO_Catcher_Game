@@ -1,5 +1,7 @@
 import BallInfo from '../ball/BallInfo'
 import Data from '../data/Data'
+import TimeManager from './TimeManager'
+import UIManager from './UIManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -66,5 +68,11 @@ export default class BallManager extends cc.Component {
 
   resetBallData() {
     Data.ballDataInThisGame = Data.ballData.map((item) => ({ ...item }))
+  }
+
+  settleTimeBall(ball: cc.Node) {
+    TimeManager.Instance.addRemainTime(1)
+    this.node.getComponent(UIManager).playTimerUIAddTimeAnimation()
+    ball.removeFromParent(true)
   }
 }

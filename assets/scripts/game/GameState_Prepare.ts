@@ -31,6 +31,8 @@ export default class GameState_Prepare extends FSMState {
       HeartManager.Instance.MaxHeart
     )
     uiManager.updateCoinUI(CoinManager.Instance.Coin)
+
+    TimeManager.Instance.initTime()
     uiManager.updateTimerUI(TimeManager.Instance.roundTime)
 
     StageManager.Instance.NextStage()

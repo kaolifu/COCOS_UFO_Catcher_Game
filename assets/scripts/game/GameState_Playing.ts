@@ -11,8 +11,12 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class GameState_Playing extends FSMState {
+  isPlaying: boolean = true
+
   onEnter(): void {
     super.onEnter()
+
+    this.isPlaying = true
 
     let um = this.component.node.getComponent(UIManager)
     let bm = this.component.node.getComponent(BallManager)
@@ -28,7 +32,7 @@ export default class GameState_Playing extends FSMState {
     bm.clearBallsInBox()
 
     SkillManager.Instance.applyAllSkillEffect()
-    
+
     let currentBallData = Data.ballDataInThisGame.filter(
       (ballData) => ballData.percent > 0
     )
@@ -52,7 +56,9 @@ export default class GameState_Playing extends FSMState {
       .getComponent(UIManager)
       .updateTimerUI(TimeManager.Instance.getRemainTime())
 
-    if (TimeManager.Instance.getRemainTime() <= 0) {
+    if (TimeManager.Instance.getRemainTime() <= 0 && this.isPlaying) {
+      this.isPlaying = false
+
       TimeManager.Instance.stopTimer()
       this.component.node
         .getComponent(CatcherControl)

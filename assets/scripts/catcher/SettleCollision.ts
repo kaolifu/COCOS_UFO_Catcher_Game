@@ -1,4 +1,6 @@
+import BallInfo from '../ball/BallInfo'
 import BallManager from '../manager/BallManager'
+import TimeManager from '../manager/TimeManager'
 import UIManager from '../manager/UIManager'
 
 const { ccclass, property } = cc._decorator
@@ -10,11 +12,15 @@ export default class SettleCollision extends cc.Component {
     this.gameManager = cc.find('Canvas/GameManager')
   }
   start() {}
-  onCollisionEnter(other: any, self: any) {
+  onCollisionEnter(other: cc.Collider, self: any) {
     if (other.tag == 99) {
-      this.gameManager
-        .getComponent(BallManager)
-        .caughtBallsThisRound.push(other.node)
+      if (other.node.getComponent(BallInfo).ballName == 'timeBall') {
+        this.gameManager.getComponent(BallManager).settleTimeBall(other.node)
+      } else {
+        this.gameManager
+          .getComponent(BallManager)
+          .caughtBallsThisRound.push(other.node)
+      }
     }
   }
 }

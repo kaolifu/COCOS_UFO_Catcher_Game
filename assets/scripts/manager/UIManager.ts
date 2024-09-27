@@ -77,6 +77,9 @@ export default class UIManager extends cc.Component {
       .toFixed(2)
       .toString()
   }
+  playTimerUIAddTimeAnimation() {
+    this.timerUI.getComponent(cc.Animation).play('TimerUI_AddTime')
+  }
 
   showCountDownUI() {
     this.countDownUI.active = true
