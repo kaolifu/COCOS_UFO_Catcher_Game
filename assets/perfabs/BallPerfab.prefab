@@ -556,7 +556,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 62.73,
+      "width": 50,
       "height": 60.480000000000004
     },
     "_anchorPoint": {
@@ -602,11 +602,13 @@
     },
     "_enabled": true,
     "_fontFamily": "Arial",
-    "_isSystemFontUsed": true,
+    "_isSystemFontUsed": false,
     "_N$string": "<outline color=#000000 width=4>+1</outline>",
     "_N$horizontalAlign": 0,
     "_N$fontSize": 48,
-    "_N$font": null,
+    "_N$font": {
+      "__uuid__": "9f9a6c1e-76f7-432f-a8b1-4fc009e94967"
+    },
     "_N$cacheMode": 0,
     "_N$maxWidth": 0,
     "_N$lineHeight": 48,

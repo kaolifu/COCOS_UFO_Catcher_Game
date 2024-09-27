@@ -181,7 +181,7 @@ export default class GameState_RoundOver extends FSMState {
 
   playBombWarnAnim(callback?: Function): void {
     this.uiManager.showBombWarnUI()
-    this.uiManager.bombWarnUI.getComponent(cc.Animation).on('finished', () => {
+    this.uiManager.bombWarnUI.getComponent(cc.Animation).once('finished', () => {
       this.uiManager.hideBombWarnUI()
       callback && callback()
     })
