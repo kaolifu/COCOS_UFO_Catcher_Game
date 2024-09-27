@@ -144,10 +144,7 @@ export default class GameState_RoundOver extends FSMState {
         completedAnimations++
 
         if (completedAnimations === currentBalls.length) {
-          this.uiManager.updateHeartUI(
-            HeartManager.Instance.CurrentHeart,
-            HeartManager.Instance.MaxHeart
-          )
+          this.uiManager.updateHeartUI()
           this.playExploreAnimSquance(index + 1, balls, callback)
         }
       })
@@ -181,10 +178,12 @@ export default class GameState_RoundOver extends FSMState {
 
   playBombWarnAnim(callback?: Function): void {
     this.uiManager.showBombWarnUI()
-    this.uiManager.bombWarnUI.getComponent(cc.Animation).once('finished', () => {
-      this.uiManager.hideBombWarnUI()
-      callback && callback()
-    })
+    this.uiManager.bombWarnUI
+      .getComponent(cc.Animation)
+      .once('finished', () => {
+        this.uiManager.hideBombWarnUI()
+        callback && callback()
+      })
   }
 
   playSettleAnimSquance(

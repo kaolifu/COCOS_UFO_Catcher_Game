@@ -20,11 +20,8 @@ export default class CatcherState_Settle extends FSMState {
       this.catcherControl.settleCollision.active = false
 
       this.catcherControl.node
-        .getComponent(UIManager)
+        .getComponent(BallManager)
         .moveBallToCaughtBallListUI(0, () => {
-          this.catcherControl
-            .getComponent(BallManager)
-            .clearCaughtBallsThisRound()
           this.catcherControl.changeToMoveXState()
         })
     }, 0.1)

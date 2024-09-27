@@ -26,10 +26,7 @@ export default class GameState_Prepare extends FSMState {
       uiManager.instantiateSkillUI(id)
     }
 
-    uiManager.updateHeartUI(
-      HeartManager.Instance.CurrentHeart,
-      HeartManager.Instance.MaxHeart
-    )
+    uiManager.updateHeartUI()
     uiManager.updateCoinUI(CoinManager.Instance.Coin)
 
     TimeManager.Instance.initTime()

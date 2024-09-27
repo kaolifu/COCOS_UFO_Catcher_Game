@@ -14,13 +14,9 @@ export default class SettleCollision extends cc.Component {
   start() {}
   onCollisionEnter(other: cc.Collider, self: any) {
     if (other.tag == 99) {
-      if (other.node.getComponent(BallInfo).ballName == 'timeBall') {
-        this.gameManager.getComponent(BallManager).settleTimeBall(other.node)
-      } else {
-        this.gameManager
-          .getComponent(BallManager)
-          .caughtBallsThisRound.push(other.node)
-      }
+      this.gameManager
+        .getComponent(BallManager)
+        .caughtBallsThisRound.push(other.node)
     }
   }
 }

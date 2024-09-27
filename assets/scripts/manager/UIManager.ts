@@ -2,6 +2,7 @@ import BallInfo from '../ball/BallInfo'
 import Data, { SkillData } from '../data/Data'
 import SkillInfo from '../skill/SkillInfo'
 import BallManager from './BallManager'
+import HeartManager from './HeartManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -41,30 +42,6 @@ export default class UIManager extends cc.Component {
   start() {}
 
   // update (dt) {}
-  moveBallToCaughtBallListUI(index: number, callback: () => void) {
-    let ballList = this.node.getComponent(BallManager).caughtBallsThisRound
-
-    if (index >= ballList.length) {
-      ballList = []
-      callback()
-      return
-    }
-
-    let ball = ballList[index]
-    // ball.getComponent(cc.Animation).play('Ball_MoveToUI')
-    // ball.getComponent(cc.Animation).on('finished', () => {
-    ball.angle = 0
-    ball.getComponent(cc.RigidBody).type = cc.RigidBodyType.Static
-    if (ball.getComponent(BallInfo).rarity)
-      ball.getComponent(cc.Animation).play('Ball_Rarity')
-
-    ball.parent = this.caughtBallList
-    this.scheduleOnce(() => {
-      this.moveBallToCaughtBallListUI(index + 1, callback)
-    }, 0.2)
-    // })
-  }
-
   showSkillSelectUI() {
     this.skillSelectUI.active = true
   }
@@ -178,7 +155,10 @@ export default class UIManager extends cc.Component {
     this.skillSelectUI.getChildByName('SkillList').removeAllChildren()
   }
 
-  updateHeartUI(currentHeart: number, maxHeart: number) {
+  updateHeartUI() {
+    let maxHeart = HeartManager.Instance.MaxHeart
+    let currentHeart = HeartManager.Instance.CurrentHeart
+
     this.HeartUI.removeAllChildren()
 
     let maxHeartCount = Math.floor(maxHeart / 4)
@@ -213,6 +193,11 @@ export default class UIManager extends cc.Component {
   playHeartUIShakeAnim() {
     for (let heart of this.HeartUI.children) {
       heart.getComponent(cc.Animation).play('HeartUI_Shake')
+    }
+  }
+  playHeartUIHealAnim() {
+    for (let heart of this.HeartUI.children) {
+      heart.getComponent(cc.Animation).play('HeartUI_Heal')
     }
   }
 

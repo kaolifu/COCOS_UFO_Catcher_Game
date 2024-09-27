@@ -26,4 +26,12 @@ export default class HeartManager {
       this.currentHeart = 0
     }
   }
+
+  public addCurrentHeart(heal: number) {
+    this.currentHeart += heal
+
+    if (this.currentHeart > this.maxHeart) {
+      this.currentHeart = this.maxHeart
+    }
+  }
 }

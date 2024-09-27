@@ -5,6 +5,7 @@ export interface BallData {
   ballName: string
   type: string
   score: number
+  heal?: number
   percent: number
   rarityPercent: number
   rarityMultiplier: number
@@ -135,9 +136,10 @@ export default class Data {
           ballName: 'meatBall',
           type: 'food',
           score: 1,
+          heal: 1,
           percent: 5,
           rarityPercent: 0.05,
-          rarityMultiplier: 3,
+          rarityMultiplier: 2,
           spriteFrame: meat,
         },
         {
@@ -145,9 +147,10 @@ export default class Data {
           ballName: 'pizzaBall',
           type: 'food',
           score: 2,
+          heal: 2,
           percent: 0,
           rarityPercent: 0.05,
-          rarityMultiplier: 3,
+          rarityMultiplier: 2,
           spriteFrame: pizza,
         },
         {
@@ -155,9 +158,10 @@ export default class Data {
           ballName: 'hamburgerBall',
           type: 'food',
           score: 3,
+          heal: 4,
           percent: 0,
           rarityPercent: 0.05,
-          rarityMultiplier: 3,
+          rarityMultiplier: 2,
           spriteFrame: hamburger,
         },
         {
@@ -165,9 +169,10 @@ export default class Data {
           ballName: 'hamburgerGoldBall',
           type: 'food',
           score: 5,
+          heal: 8,
           percent: 0,
           rarityPercent: 1,
-          rarityMultiplier: 3,
+          rarityMultiplier: 2,
           spriteFrame: hamburgerG,
         },
         {
