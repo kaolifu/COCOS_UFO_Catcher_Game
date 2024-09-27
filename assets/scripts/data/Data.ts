@@ -210,7 +210,7 @@ export default class Data {
           ballName: 'chickenBall',
           type: 'animal',
           score: 1,
-          percent: 5,
+          percent: 10,
           rarityPercent: 0.1,
           rarityMultiplier: 3,
           spriteFrame: chicken,

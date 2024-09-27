@@ -32,6 +32,8 @@ export default class CatcherControl extends cc.Component {
   handler: cc.Node = null
   @property(cc.Node)
   button: cc.Node = null
+  @property(cc.Node)
+  animal: cc.Node = null
   //#endregion
 
   fsmManager: FSMManager = null
@@ -94,5 +96,9 @@ export default class CatcherControl extends cc.Component {
 
   onButtonClick() {
     this.changeToMoveYState()
+  }
+
+  playAnimalAnim() {
+    this.animal.getComponent(cc.Animation).play('Animal_Appear')
   }
 }

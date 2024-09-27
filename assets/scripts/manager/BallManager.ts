@@ -1,4 +1,5 @@
 import BallInfo from '../ball/BallInfo'
+import CatcherControl from '../catcher/CatcherControl'
 import Data from '../data/Data'
 import HeartManager from './HeartManager'
 import TimeManager from './TimeManager'
@@ -12,6 +13,8 @@ export default class BallManager extends cc.Component {
   ballPrefab: cc.Prefab = null
 
   caughtBallsThisRound: cc.Node[] = []
+  caughtAnimalBallsThisRound: cc.Node[] = []
+  animalBallTimer: number = null
 
   start() {}
 
@@ -88,6 +91,9 @@ export default class BallManager extends cc.Component {
     } else if (ballInfo.type == 'food') {
       this.settleFoodBall(ball)
       this.settleNormalBall(ball)
+    } else if (ballInfo.type == 'animal') {
+      this.settleAnimalBall(ball)
+      this.settleNormalBall(ball)
     } else {
       this.settleNormalBall(ball)
     }
@@ -107,6 +113,39 @@ export default class BallManager extends cc.Component {
     HeartManager.Instance.addCurrentHeart(ball.getComponent(BallInfo).heal)
     this.node.getComponent(UIManager).updateHeartUI()
     this.node.getComponent(UIManager).playHeartUIHealAnim()
+  }
+
+  settleAnimalBall(ball: cc.Node) {
+    this.caughtAnimalBallsThisRound.push(ball)
+    if (this.animalBallTimer) {
+      clearTimeout(this.animalBallTimer)
+    }
+
+    this.animalBallTimer = setTimeout(() => {
+      this.cloneAnimalBall()
+      this.animalBallTimer = null
+    }, 1000)
+  }
+
+  cloneAnimalBall() {
+    this.node.getComponent(CatcherControl).playAnimalAnim()
+
+    this.scheduleOnce(() => {
+      let animalBalls = this.caughtAnimalBallsThisRound
+      for (let ball of animalBalls) {
+        let ballClone = cc.instantiate(ball)
+        ballClone.parent = this.node
+        ballClone.getComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic
+        ballClone.scale = 1
+        ballClone.x = -130
+        ballClone.y = 300
+        ballClone.getComponent(cc.RigidBody).linearVelocity = cc.v2(
+          Math.random() * 1000,
+          Math.random() * 500
+        )
+      }
+      this.caughtAnimalBallsThisRound = []
+    }, 0.5)
   }
 
   settleNormalBall(ball: cc.Node) {
