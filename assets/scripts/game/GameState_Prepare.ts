@@ -15,7 +15,7 @@ export default class GameState_Prepare extends FSMState {
   onEnter(): void {
     super.onEnter()
 
-    SoundManager.Instance.playBGM('playingBGM')
+    // SoundManager.Instance.playBGM('playingBGM')
 
     let uiManager = this.component.getComponent(UIManager)
 

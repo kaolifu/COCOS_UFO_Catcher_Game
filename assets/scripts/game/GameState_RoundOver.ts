@@ -30,7 +30,10 @@ export default class GameState_RoundOver extends FSMState {
         // 做爆炸处理
         this.playBombWarnAnim(() => {
           let exploreBalls = this.calculateExploreBalls(caughtBalls)
-          this.playExploreAnimSquance(0, exploreBalls, () => {
+          let shieldBalls = caughtBalls.filter((ball) => {
+            return ball.getComponent(BallInfo).ballName == 'shieldBall'
+          })
+          this.playExploreAnimSquance(0, exploreBalls, shieldBalls, () => {
             let settleBalls = caughtBalls.filter((ball) => {
               return ball.opacity > 0
             })
@@ -114,7 +117,12 @@ export default class GameState_RoundOver extends FSMState {
   //   }
   // }
 
-  playExploreAnimSquance(index: number, balls, callback?: Function): void {
+  playExploreAnimSquance(
+    index: number,
+    balls,
+    shields,
+    callback?: Function
+  ): void {
     let exploreBalls = balls
 
     if (index >= exploreBalls.length) {
@@ -125,6 +133,17 @@ export default class GameState_RoundOver extends FSMState {
     let currentBalls = exploreBalls[index].filter((ball) => ball.opacity > 0)
 
     let completedAnimations = 0
+
+    let isProtected = false
+    console.log(shields)
+    if (shields.length > 0) {
+      isProtected = true
+      shields[0].getComponent(cc.Animation).play('Ball_Shield')
+      shields.shift()
+    }
+    console.log(isProtected)
+    console.log(shields)
+
     for (let i = 0; i < currentBalls.length; i++) {
       const ball = currentBalls[i]
       const ballInfo = ball.getComponent(BallInfo)
@@ -132,15 +151,16 @@ export default class GameState_RoundOver extends FSMState {
 
       if (ballInfo.ballName == 'bombBall') {
         animation.play('Ball_Explode')
-        HeartManager.Instance.subCurrentHeart(1)
-        // SoundManager.Instance.playEffectSound('countDown')
+        isProtected ? null : HeartManager.Instance.subCurrentHeart(1)
       } else {
-        animation.play('Ball_Explode2')
+        isProtected ? completedAnimations++ : animation.play('Ball_Explode2')
       }
 
       this.component.scheduleOnce(() => {
-        this.uiManager.playHeartUIShakeAnim()
-        SoundManager.Instance.playEffectSound('explode', false, 0.2)
+        isProtected ? null : this.uiManager.playHeartUIShakeAnim()
+        isProtected
+          ? SoundManager.Instance.playEffectSound('protected', false, 0.5)
+          : SoundManager.Instance.playEffectSound('explode', false, 0.2)
       }, 0.8)
 
       animation.once('finished', () => {
@@ -148,7 +168,7 @@ export default class GameState_RoundOver extends FSMState {
 
         if (completedAnimations === currentBalls.length) {
           this.uiManager.updateHeartUI()
-          this.playExploreAnimSquance(index + 1, balls, callback)
+          this.playExploreAnimSquance(index + 1, balls, shields, callback)
         }
       })
     }
@@ -178,6 +198,8 @@ export default class GameState_RoundOver extends FSMState {
 
     return exploreBalls
   }
+
+  checkShield() {}
 
   playBombWarnAnim(callback?: Function): void {
     this.uiManager.showBombWarnUI()

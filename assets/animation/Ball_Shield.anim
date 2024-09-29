@@ -1,0 +1,121 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "Ball_Shield",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.6666666666666667,
+  "sample": 12,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "image": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "73aa4137-fd5b-4059-afee-dd44556c6200"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "bg": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": false
+            },
+            {
+              "frame": 0.75,
+              "value": true
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": false
+            }
+          ],
+          "color": [
+            {
+              "frame": 0.75,
+              "value": {
+                "__type__": "cc.Color",
+                "r": 63,
+                "g": 169,
+                "b": 246,
+                "a": 255
+              }
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0.75,
+              "value": 100
+            }
+          ],
+          "width": [
+            {
+              "frame": 0.75,
+              "value": 60
+            },
+            {
+              "frame": 1.25,
+              "value": 2000
+            }
+          ],
+          "height": [
+            {
+              "frame": 0.75,
+              "value": 60
+            },
+            {
+              "frame": 1.25,
+              "value": 2000
+            }
+          ]
+        }
+      }
+    },
+    "props": {
+      "scale": [
+        {
+          "frame": 0,
+          "value": {
+            "__type__": "cc.Vec3",
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        {
+          "frame": 0.16666666666666666,
+          "value": {
+            "__type__": "cc.Vec3",
+            "x": 2,
+            "y": 2,
+            "z": 1
+          }
+        }
+      ],
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 255
+        },
+        {
+          "frame": 1.5833333333333333,
+          "value": 255
+        },
+        {
+          "frame": 1.6666666666666667,
+          "value": 0
+        }
+      ]
+    }
+  },
+  "events": []
+}

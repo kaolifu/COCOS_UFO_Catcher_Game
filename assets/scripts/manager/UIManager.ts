@@ -215,4 +215,5 @@ export default class UIManager extends cc.Component {
   clearSkillInThisGameList() {
     this.SkillInThisGameList.removeAllChildren()
   }
+
 }
