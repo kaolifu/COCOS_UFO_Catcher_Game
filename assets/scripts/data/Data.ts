@@ -62,7 +62,7 @@ export default class Data {
       const cow = await this.loadResource('Images/Icons/cow')
       const chickenG = await this.loadResource('Images/Icons/chicken-gold')
 
-      const egg = await this.loadResource('Images/Icons/egg')
+      const heart = await this.loadResource('Images/Icons/heart')
       const time = await this.loadResource('Images/Icons/time0')
       const shield = await this.loadResource('Images/Icons/shield')
       const bomb = await this.loadResource('Images/Icons/bomb')
@@ -86,8 +86,8 @@ export default class Data {
           ballName: 'appleBall',
           type: 'fruit',
           score: 1,
-          percent: 5,
-          rarityPercent: 0.1,
+          percent: 20,
+          rarityPercent: 0.2,
           rarityMultiplier: 5,
           spriteFrame: apple,
         },
@@ -126,7 +126,7 @@ export default class Data {
           ballName: 'bombBall',
           type: 'bomb',
           score: 0,
-          percent: 10,
+          percent: 30,
           rarityPercent: 0,
           rarityMultiplier: 0,
           spriteFrame: bomb,
@@ -210,7 +210,7 @@ export default class Data {
           ballName: 'chickenBall',
           type: 'animal',
           score: 1,
-          percent: 10,
+          percent: 0,
           rarityPercent: 0.1,
           rarityMultiplier: 3,
           spriteFrame: chicken,
@@ -250,7 +250,7 @@ export default class Data {
           ballName: 'shieldBall',
           type: 'special',
           score: 0,
-          percent: 10,
+          percent: 1,
           rarityPercent: 0,
           rarityMultiplier: 0,
           spriteFrame: shield,
@@ -270,10 +270,10 @@ export default class Data {
           ballName: 'heartBall',
           type: 'special',
           score: 0,
-          percent: 0,
-          rarityPercent: 0,
+          percent: 1,
+          rarityPercent: 1,
           rarityMultiplier: 0,
-          spriteFrame: shield,
+          spriteFrame: heart,
         },
       ]
 

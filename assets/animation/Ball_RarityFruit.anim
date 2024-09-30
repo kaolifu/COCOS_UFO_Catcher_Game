@@ -1,0 +1,67 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "Ball_RarityFruit",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0833333333333333,
+  "sample": 12,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "bg": {
+        "props": {
+          "color": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Color",
+                "r": 255,
+                "g": 230,
+                "b": 9,
+                "a": 255
+              }
+            }
+          ],
+          "width": [
+            {
+              "frame": 0,
+              "value": 60
+            },
+            {
+              "frame": 0.25,
+              "value": 240
+            }
+          ],
+          "height": [
+            {
+              "frame": 0,
+              "value": 60
+            },
+            {
+              "frame": 0.25,
+              "value": 120
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 100
+            }
+          ],
+          "active": [
+            {
+              "frame": 0,
+              "value": true
+            },
+            {
+              "frame": 1.0833333333333333,
+              "value": false
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

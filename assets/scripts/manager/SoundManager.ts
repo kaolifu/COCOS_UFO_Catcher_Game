@@ -46,4 +46,7 @@ export default class SoundManager extends cc.Component {
     })
   }
 
+  stopBgm() {
+    cc.audioEngine.stopMusic()
+  }
 }

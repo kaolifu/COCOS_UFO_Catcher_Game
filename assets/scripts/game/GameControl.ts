@@ -1,7 +1,10 @@
+import CoinManager from '../manager/CoinManager'
 import SkillManager from '../manager/SkillManager'
 import SoundManager from '../manager/SoundManager'
 import UIManager from '../manager/UIManager'
 import FSMManager from '../utility/FSMManager'
+import GameState_GameOver from './GameState_GameOver'
+import GameState_Init from './GameState_Init'
 import GameState_Playing from './GameState_Playing'
 import GameState_Prepare from './GameState_Prepare'
 import GameState_RoundOver from './GameState_RoundOver'
@@ -9,9 +12,11 @@ import GameState_RoundOver from './GameState_RoundOver'
 const { ccclass, property } = cc._decorator
 
 enum GameState {
+  Init,
   PrePare,
   Playing,
   RoundOver,
+  GameOver,
 }
 @ccclass
 export default class GameControl extends cc.Component {
@@ -21,6 +26,7 @@ export default class GameControl extends cc.Component {
   start() {
     this.fsmManager = new FSMManager()
 
+    let InitState = new GameState_Init(GameState.Init, this, this.fsmManager)
     let prepareState = new GameState_Prepare(
       GameState.PrePare,
       this,
@@ -36,7 +42,18 @@ export default class GameControl extends cc.Component {
       this,
       this.fsmManager
     )
-    this.fsmManager.StateList.push(prepareState, playingState, roundOverState)
+    let gameOverState = new GameState_GameOver(
+      GameState.GameOver,
+      this,
+      this.fsmManager
+    )
+    this.fsmManager.StateList.push(
+      InitState,
+      prepareState,
+      playingState,
+      roundOverState,
+      gameOverState
+    )
 
     // this.fsmManager.changeState(GameState.PrePare)
   }
@@ -45,14 +62,20 @@ export default class GameControl extends cc.Component {
     this.fsmManager.onUpdate(dt)
   }
 
+  changeToInitState() {
+    this.fsmManager.changeState(GameState.Init)
+  }
+  changeToPrepareState() {
+    this.fsmManager.changeState(GameState.PrePare)
+  }
   changeToPlayingState() {
     this.fsmManager.changeState(GameState.Playing)
   }
   changeToRoundOverState() {
     this.fsmManager.changeState(GameState.RoundOver)
   }
-  changeToPrepareState() {
-    this.fsmManager.changeState(GameState.PrePare)
+  changeToGameOverState() {
+    this.fsmManager.changeState(GameState.GameOver)
   }
 
   onSkillConfirmBtnClick() {
@@ -64,5 +87,12 @@ export default class GameControl extends cc.Component {
 
     this.node.getComponent(UIManager).hideSkillSelectUI()
     this.changeToPlayingState()
+  }
+
+  onGameOverBtnClick() {
+    cc.director.loadScene('02-1AdventureScene')
+    SoundManager.Instance.playEffectSound('tap')
+    CoinManager.Instance.addTotalCoin(CoinManager.Instance.Coin)
+    CoinManager.Instance.resetCoin()
   }
 }

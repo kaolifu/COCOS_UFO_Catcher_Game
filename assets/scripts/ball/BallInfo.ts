@@ -7,5 +7,6 @@ export default class BallInfo extends cc.Component {
   score: number
   heal?: number
   rarity: boolean
+  rarityMultiplier: number
   spirteFrame: cc.SpriteFrame
 }

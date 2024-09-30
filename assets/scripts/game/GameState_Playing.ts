@@ -42,6 +42,7 @@ export default class GameState_Playing extends FSMState {
     um.showCountDownUI()
     SoundManager.Instance.playEffectSound('ready')
     um.countDownUI.getComponent(cc.Animation).on('finished', () => {
+
       um.hideCountDownUI()
       bm.createBalls()
       ccontrol.changeToMoveXState()

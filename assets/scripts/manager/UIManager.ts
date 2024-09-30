@@ -2,6 +2,7 @@ import BallInfo from '../ball/BallInfo'
 import Data, { SkillData } from '../data/Data'
 import SkillInfo from '../skill/SkillInfo'
 import BallManager from './BallManager'
+import CoinManager from './CoinManager'
 import HeartManager from './HeartManager'
 
 const { ccclass, property } = cc._decorator
@@ -38,6 +39,12 @@ export default class UIManager extends cc.Component {
   SkillInThisGameList: cc.Node = null
   @property(cc.Prefab)
   SkillInThisGamePerfab: cc.Prefab = null
+  @property(cc.Node)
+  FruitsFeverUI: cc.Node = null
+  @property(cc.Node)
+  GameOverUI: cc.Node = null
+  @property(cc.Node)
+  GameOverSettleUI: cc.Node = null
 
   start() {}
 
@@ -216,4 +223,38 @@ export default class UIManager extends cc.Component {
     this.SkillInThisGameList.removeAllChildren()
   }
 
+  updateBallScoreUI(ball: cc.Node, score: number) {
+    ball.getChildByName('score').getComponent(cc.RichText).string =
+      `<outline color=#000000 width=2>+${score}</outline>`.toString()
+  }
+
+  showFruitsFeverUI() {
+    this.FruitsFeverUI.active = true
+    this.FruitsFeverUI.getComponent(cc.Animation).play('FruitsFeverUI')
+  }
+
+  hideFruitsFeverUI() {
+    this.FruitsFeverUI.active = false
+  }
+
+  showGameOverUI() {
+    this.GameOverUI.active = true
+  }
+
+  hideGameOverUI() {
+    this.GameOverUI.active = false
+  }
+
+  showGameOverSettleUI() {
+    this.GameOverSettleUI.getChildByName('GetCoins')
+      .getChildByName('content')
+      .getComponent(
+        cc.RichText
+      ).string = `<outline color=#000000 width=4>${CoinManager.Instance.Coin.toString()}</outline>`
+    this.GameOverSettleUI.active = true
+  }
+
+  hideGameOverSettleUI() {
+    this.GameOverSettleUI.active = false
+  }
 }

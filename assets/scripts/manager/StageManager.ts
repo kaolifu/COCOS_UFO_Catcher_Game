@@ -25,6 +25,11 @@ export default class StageManager {
     }
   }
 
+  public resetStage(): void {
+    this.stageLg = 1
+    this.stageSm = 0
+  }
+
   public get StageLg(): number {
     return this.stageLg
   }

@@ -52,14 +52,14 @@ export default class BallManager extends cc.Component {
         ballInfo.score = ballData[i].score
         ballInfo.heal = ballData[i].heal
         ballInfo.rarity = false
+        ballInfo.rarityMultiplier = ballData[i].rarityMultiplier
         if (randomNum > -ballData[i].percent * ballData[i].rarityPercent) {
           ballInfo.rarity = true
           ballInfo.score *= ballData[i].rarityMultiplier
           ballInfo.heal *= ballData[i].rarityMultiplier
           ballNode.scale = 1.5
         }
-        ballNode.getChildByName('score').getComponent(cc.RichText).string =
-          `<outline color=#000000 width=2>+${ballInfo.score}</outline>`.toString()
+        this.getComponent(UIManager).updateBallScoreUI(ballNode, ballInfo.score)
         break
       }
     }
@@ -95,6 +95,8 @@ export default class BallManager extends cc.Component {
     } else if (ballInfo.type == 'animal') {
       this.settleAnimalBall(ball)
       this.settleNormalBall(ball)
+    } else if (ballInfo.ballName == 'heartBall') {
+      this.settleHeartBall(ball)
     } else {
       this.settleNormalBall(ball)
     }
@@ -166,6 +168,14 @@ export default class BallManager extends cc.Component {
       }
       this.caughtAnimalBallsThisRound = []
     }, 0.5)
+  }
+
+  settleHeartBall(ball: cc.Node) {
+    HeartManager.Instance.addMaxHeart(1)
+    this.node.getComponent(UIManager).updateHeartUI()
+
+    ball.destroy()
+    SoundManager.Instance.playEffectSound('heartUp')
   }
 
   settleNormalBall(ball: cc.Node) {

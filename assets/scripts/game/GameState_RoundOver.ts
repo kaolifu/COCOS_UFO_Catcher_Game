@@ -37,17 +37,55 @@ export default class GameState_RoundOver extends FSMState {
             let settleBalls = caughtBalls.filter((ball) => {
               return ball.opacity > 0
             })
-            this.playSettleAnimSquance(0, settleBalls, () => {
+            let isRarityFruitExist = settleBalls.some(
+              (ball) =>
+                ball.getComponent(BallInfo).rarity == true &&
+                ball.getComponent(BallInfo).type == 'fruit'
+            )
+            if (isRarityFruitExist) {
+              this.uiManager.showFruitsFeverUI()
+              this.playFruitsSettleAnimSquance(0, settleBalls, () => {
+                this.playSettleAnimSquance(0, settleBalls, () => {
+                  this.uiManager.hideFruitsFeverUI()
+                  this.uiManager.clearCaughtBallListChildren()
+                  this.gameControl.changeToPrepareState()
+                })
+              })
+            } else {
+              this.playSettleAnimSquance(0, settleBalls, () => {
+                this.uiManager.clearCaughtBallListChildren()
+                this.gameControl.changeToPrepareState()
+              })
+            }
+          })
+        })
+      } else {
+        let isRarityFruitExist = caughtBalls.some(
+          (ball) =>
+            ball.getComponent(BallInfo).rarity == true &&
+            ball.getComponent(BallInfo).type == 'fruit'
+        )
+        if (isRarityFruitExist) {
+          this.uiManager.showFruitsFeverUI()
+          this.playFruitsSettleAnimSquance(0, caughtBalls, () => {
+            this.playSettleAnimSquance(0, caughtBalls, () => {
+              this.uiManager.hideFruitsFeverUI()
               this.uiManager.clearCaughtBallListChildren()
               this.gameControl.changeToPrepareState()
             })
           })
-        })
-      } else {
+        } else {
+          this.playSettleAnimSquance(0, caughtBalls, () => {
+            this.uiManager.clearCaughtBallListChildren()
+            this.gameControl.changeToPrepareState()
+          })
+        }
         // 做结算处理
-        this.playSettleAnimSquance(0, caughtBalls, () => {
-          this.uiManager.clearCaughtBallListChildren()
-          this.gameControl.changeToPrepareState()
+        this.playFruitsSettleAnimSquance(0, caughtBalls, () => {
+          this.playSettleAnimSquance(0, caughtBalls, () => {
+            this.uiManager.clearCaughtBallListChildren()
+            this.gameControl.changeToPrepareState()
+          })
         })
       }
     } else {
@@ -135,14 +173,11 @@ export default class GameState_RoundOver extends FSMState {
     let completedAnimations = 0
 
     let isProtected = false
-    console.log(shields)
     if (shields.length > 0) {
       isProtected = true
       shields[0].getComponent(cc.Animation).play('Ball_Shield')
       shields.shift()
     }
-    console.log(isProtected)
-    console.log(shields)
 
     for (let i = 0; i < currentBalls.length; i++) {
       const ball = currentBalls[i]
@@ -151,12 +186,12 @@ export default class GameState_RoundOver extends FSMState {
 
       if (ballInfo.ballName == 'bombBall') {
         animation.play('Ball_Explode')
-        isProtected ? null : HeartManager.Instance.subCurrentHeart(1)
       } else {
         isProtected ? completedAnimations++ : animation.play('Ball_Explode2')
       }
 
       this.component.scheduleOnce(() => {
+        isProtected ? null : HeartManager.Instance.subCurrentHeart(1)
         isProtected ? null : this.uiManager.playHeartUIShakeAnim()
         isProtected
           ? SoundManager.Instance.playEffectSound('protected', false, 0.5)
@@ -168,6 +203,10 @@ export default class GameState_RoundOver extends FSMState {
 
         if (completedAnimations === currentBalls.length) {
           this.uiManager.updateHeartUI()
+          if (HeartManager.Instance.CurrentHeart <= 0) {
+            this.gameControl.changeToGameOverState()
+            return
+          }
           this.playExploreAnimSquance(index + 1, balls, shields, callback)
         }
       })
@@ -199,8 +238,6 @@ export default class GameState_RoundOver extends FSMState {
     return exploreBalls
   }
 
-  checkShield() {}
-
   playBombWarnAnim(callback?: Function): void {
     this.uiManager.showBombWarnUI()
 
@@ -212,6 +249,64 @@ export default class GameState_RoundOver extends FSMState {
         this.uiManager.hideBombWarnUI()
         callback && callback()
       })
+  }
+
+  playFruitsSettleAnimSquance(
+    index: number,
+    settleBalls: cc.Node[],
+    callback?: Function
+  ): void {
+    if (index >= settleBalls.length) {
+      callback && callback()
+      return
+    }
+
+    let ball = settleBalls[index]
+    let ballInfo = ball.getComponent(BallInfo)
+    if (ballInfo.type != 'fruit' || ballInfo.rarity == false) {
+      this.playFruitsSettleAnimSquance(index + 1, settleBalls, callback)
+      return
+    }
+
+    let expandBalls = []
+
+    let prevBall = settleBalls[index - 1]
+    if (prevBall) {
+      let prevBallInfo = prevBall.getComponent(BallInfo)
+      if (prevBallInfo.type == 'fruit' && prevBallInfo.rarity == false) {
+        prevBallInfo.score *= prevBallInfo.rarityMultiplier
+        this.component.node
+          .getComponent(UIManager)
+          .updateBallScoreUI(prevBall, prevBallInfo.score)
+        expandBalls.push(prevBall)
+      }
+    }
+    let nextBall = settleBalls[index + 1]
+    if (nextBall) {
+      let nextBallInfo = nextBall.getComponent(BallInfo)
+      if (nextBallInfo.type == 'fruit' && nextBallInfo.rarity == false) {
+        nextBallInfo.score *= nextBallInfo.rarityMultiplier
+        nextBallInfo.rarity = true
+        this.component.node
+          .getComponent(UIManager)
+          .updateBallScoreUI(nextBall, nextBallInfo.score)
+        expandBalls.push(nextBall)
+      }
+    }
+    if (expandBalls.length == 0) {
+      this.playFruitsSettleAnimSquance(index + 1, settleBalls, callback)
+      return
+    }
+
+    for (let expandBall of expandBalls) {
+      expandBall.getComponent(cc.Animation).play('Ball_Expand')
+    }
+    ball.getComponent(cc.Animation).play('Ball_RarityFruitV2')
+    SoundManager.Instance.playEffectSound('expand')
+
+    this.component.scheduleOnce(() => {
+      this.playFruitsSettleAnimSquance(index + 1, settleBalls, callback)
+    }, 1.5)
   }
 
   playSettleAnimSquance(

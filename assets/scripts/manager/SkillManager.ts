@@ -25,6 +25,10 @@ export default class SkillManager {
     return this.skillsInThisGame
   }
 
+  public resetSkillsInThisGame() {
+    this.skillsInThisGame = []
+  }
+
   public getThreeRandomSkillIds(): string[] {
     let skillData = [...Data.skillData]
 
