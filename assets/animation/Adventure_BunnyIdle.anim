@@ -1,0 +1,67 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "Adventure_BunnyIdle",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.8,
+  "sample": 10,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "3c92ecdc-b217-4622-bf41-6d41bc8188fe"
+            }
+          },
+          {
+            "frame": 0.1,
+            "value": {
+              "__uuid__": "8650c04b-0775-4797-baa0-23ff3196f299"
+            }
+          },
+          {
+            "frame": 0.2,
+            "value": {
+              "__uuid__": "eb3f2b83-94a0-41c7-b815-b9878de6aa49"
+            }
+          },
+          {
+            "frame": 0.3,
+            "value": {
+              "__uuid__": "4a6335e2-127f-44ab-8b30-4f8274a5d3ee"
+            }
+          },
+          {
+            "frame": 0.4,
+            "value": {
+              "__uuid__": "f2dd276c-8d1c-436e-8f49-d1ba456b95d2"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "6d3bb0c0-faf7-4eaf-bca1-a7ab777776d4"
+            }
+          },
+          {
+            "frame": 0.6,
+            "value": {
+              "__uuid__": "48dbd55e-a261-4de5-9808-a835f75504dc"
+            }
+          },
+          {
+            "frame": 0.7,
+            "value": {
+              "__uuid__": "d27c30f7-8de6-485a-96f6-494c6868e328"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

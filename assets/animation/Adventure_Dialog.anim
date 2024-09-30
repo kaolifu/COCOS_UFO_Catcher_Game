@@ -1,0 +1,59 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "Adventure_Dialog",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 10,
+  "sample": 12,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "bg": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": false
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": false
+            },
+            {
+              "frame": 3.4166666666666665,
+              "value": true
+            },
+            {
+              "frame": 10,
+              "value": true
+            }
+          ]
+        }
+      },
+      "content": {
+        "props": {
+          "active": [
+            {
+              "frame": 0,
+              "value": false
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": false
+            },
+            {
+              "frame": 3.4166666666666665,
+              "value": true
+            },
+            {
+              "frame": 10,
+              "value": true
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
