@@ -45,6 +45,8 @@ export default class UIManager extends cc.Component {
   GameOverUI: cc.Node = null
   @property(cc.Node)
   GameOverSettleUI: cc.Node = null
+  @property(cc.Node)
+  BombUI: cc.Node = null
 
   start() {}
 
@@ -256,5 +258,17 @@ export default class UIManager extends cc.Component {
 
   hideGameOverSettleUI() {
     this.GameOverSettleUI.active = false
+  }
+
+  showBombUI() {
+    this.BombUI.active = true
+    this.BombUI.getComponent(cc.Animation).play()
+    this.BombUI.getComponent(cc.Animation).on('finished', () => {
+      this.BombUI.active = false
+    })
+  }
+
+  hideBombUI() {
+    this.BombUI.active = false
   }
 }

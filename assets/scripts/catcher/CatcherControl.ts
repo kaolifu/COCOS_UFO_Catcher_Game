@@ -1,3 +1,4 @@
+import GameManager from '../manager/GameManager'
 import SoundManager from '../manager/SoundManager'
 import FSMManager from '../utility/FSMManager'
 import CatcherState_Disabled from './CatcherState_Disabled'
@@ -79,12 +80,15 @@ export default class CatcherControl extends cc.Component {
   }
 
   changeToMoveXState() {
+    if (this.node.getComponent(GameManager).isGameOver == true) return
     this.fsmManager.changeState(CatcherState.MoveX)
   }
   changeToMoveYState() {
+    if (this.node.getComponent(GameManager).isGameOver == true) return
     this.fsmManager.changeState(CatcherState.MoveY)
   }
   changeToSettleState() {
+    if (this.node.getComponent(GameManager).isGameOver == true) return
     this.fsmManager.changeState(CatcherState.Settle)
   }
   changeToDisabledState() {

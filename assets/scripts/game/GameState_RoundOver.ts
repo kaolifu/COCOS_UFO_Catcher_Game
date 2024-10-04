@@ -22,291 +22,94 @@ export default class GameState_RoundOver extends FSMState {
     let caughtBalls: cc.Node[] = this.uiManager.caughtBallList.children
     this.stopAllBallsAnim(caughtBalls)
 
-    if (caughtBalls.length > 0) {
-      let isBombExist = caughtBalls.some(
-        (ball) => ball.getComponent(BallInfo).ballName == 'bombBall'
-      )
-      if (isBombExist) {
-        // 做爆炸处理
-        this.playBombWarnAnim(() => {
-          let exploreBalls = this.calculateExploreBalls(caughtBalls)
-          let shieldBalls = caughtBalls.filter((ball) => {
-            return ball.getComponent(BallInfo).ballName == 'shieldBall'
-          })
-          this.playExploreAnimSquance(0, exploreBalls, shieldBalls, () => {
-            let settleBalls = caughtBalls.filter((ball) => {
-              return ball.opacity > 0
-            })
-            let isRarityFruitExist = settleBalls.some(
-              (ball) =>
-                ball.getComponent(BallInfo).rarity == true &&
-                ball.getComponent(BallInfo).type == 'fruit'
-            )
-            if (isRarityFruitExist) {
-              this.uiManager.showFruitsFeverUI()
-              this.playFruitsSettleAnimSquance(0, settleBalls, () => {
-                this.playSettleAnimSquance(0, settleBalls, () => {
-                  this.uiManager.hideFruitsFeverUI()
-                  this.uiManager.clearCaughtBallListChildren()
-                  this.gameControl.changeToPrepareState()
-                })
-              })
-            } else {
-              this.playSettleAnimSquance(0, settleBalls, () => {
-                this.uiManager.clearCaughtBallListChildren()
-                this.gameControl.changeToPrepareState()
-              })
-            }
-          })
-        })
-      } else {
-        let isRarityFruitExist = caughtBalls.some(
-          (ball) =>
-            ball.getComponent(BallInfo).rarity == true &&
-            ball.getComponent(BallInfo).type == 'fruit'
-        )
-        if (isRarityFruitExist) {
-          this.uiManager.showFruitsFeverUI()
-          this.playFruitsSettleAnimSquance(0, caughtBalls, () => {
-            this.playSettleAnimSquance(0, caughtBalls, () => {
-              this.uiManager.hideFruitsFeverUI()
-              this.uiManager.clearCaughtBallListChildren()
-              this.gameControl.changeToPrepareState()
-            })
-          })
-        } else {
-          this.playSettleAnimSquance(0, caughtBalls, () => {
-            this.uiManager.clearCaughtBallListChildren()
-            this.gameControl.changeToPrepareState()
-          })
-        }
-        // 做结算处理
-        this.playFruitsSettleAnimSquance(0, caughtBalls, () => {
-          this.playSettleAnimSquance(0, caughtBalls, () => {
-            this.uiManager.clearCaughtBallListChildren()
-            this.gameControl.changeToPrepareState()
-          })
-        })
-      }
-    } else {
+    if (caughtBalls.length == 0) {
       this.gameControl.changeToPrepareState()
+      return
     }
+
+    let rarityFruitsBallExists = caughtBalls.some((ball) => {
+      let ballInfo = ball.getComponent(BallInfo)
+      return ballInfo.type == 'fruit' && ballInfo.rarity == false
+    })
+    if (rarityFruitsBallExists == false) {
+      this.playSettleAnimSquance(0, caughtBalls, () => {
+        this.gameControl.changeToPrepareState()
+        this.uiManager.clearCaughtBallListChildren()
+      })
+      return
+    }
+
+    this.playFruitsSettleAnimSquance(0, caughtBalls, () => {
+      this.playSettleAnimSquance(0, caughtBalls, () => {
+        this.gameControl.changeToPrepareState()
+        this.uiManager.clearCaughtBallListChildren()
+      })
+    })
   }
+
   onUpdate(dt: any): void {
     super.onUpdate(dt)
   }
   onExit(): void {
     super.onExit()
   }
-  // playBombAnimSquance(index: number, balls, callback?: Function): void {
-  //   // 从数组中找到连续的炸弹
-  //   let leftBalls = balls
-  //   if (index >= leftBalls.length) {
-  //     // callback && callback()
-  //     console.log('exit')
-  //     return
-  //   }
-  //   let ball = leftBalls[index]
-  //   let prevBall = leftBalls[index - 1]
-  //   let nextBall = leftBalls[index + 1]
-  //   // console.log(prevBall, nextBall)
-  //   if (ball.getComponent(BallInfo).ballName == 'bombBall') {
-  //     // console.log(index + 1 + ' 是')
-  //     ball.getComponent(cc.Animation).play('Ball_Explode')
-  //     prevBall
-  //       ? prevBall.getComponent(cc.Animation).play('Ball_Explode2')
-  //       : null
-  //     nextBall
-  //       ? nextBall.getComponent(cc.Animation).play('Ball_Explode2')
-  //       : null
-  //     this.playBombAnimSquance(index + 1, leftBalls)
-  //   } else {
-  //     // 本身不是炸弹，则跳过
-  //     // console.log(index + 1 + ' 不是')
-  //     this.playBombAnimSquance(index + 1, leftBalls)
-  //     // }
-  //   }
-  // }
-
-  // playBombAnim(balls: cc.Node[], callback?: Function): void {
-  //   for (let i = 0; i < balls.length; i++) {
-  //     if (balls[i].getComponent(BallInfo).ballName == 'bombBall') {
-  //       balls[i].getComponent(cc.Animation).play('Ball_Explode')
-  //       balls[i].getComponent(cc.Animation).on('finished', () => {
-  //         // balls[i].getComponent(cc.Animation).off('finished')
-  //         callback && callback()
-  //       })
-  //       // console.log(i + '是炸弹')
-  //       if (
-  //         balls[i - 1] &&
-  //         balls[i - 1].getComponent(BallInfo).ballName != 'bombBall'
-  //       ) {
-  //         balls[i - 1].getComponent(cc.Animation).play('Ball_Explode2')
-  //         // console.log(i - 1 + '被炸了')
-  //       }
-  //       if (
-  //         balls[i + 1] &&
-  //         balls[i + 1].getComponent(BallInfo).ballName != 'bombBall'
-  //       ) {
-  //         balls[i + 1].getComponent(cc.Animation).play('Ball_Explode2')
-  //         // console.log(i + 1 + '被炸了')
-  //       }
-  //     }
-  //   }
-  // }
-
-  playExploreAnimSquance(
-    index: number,
-    balls,
-    shields,
-    callback?: Function
-  ): void {
-    let exploreBalls = balls
-
-    if (index >= exploreBalls.length) {
-      callback && callback()
-      return
-    }
-
-    let currentBalls = exploreBalls[index].filter((ball) => ball.opacity > 0)
-
-    let completedAnimations = 0
-
-    let isProtected = false
-    if (shields.length > 0) {
-      isProtected = true
-      shields[0].getComponent(cc.Animation).play('Ball_Shield')
-      shields.shift()
-    }
-
-    for (let i = 0; i < currentBalls.length; i++) {
-      const ball = currentBalls[i]
-      const ballInfo = ball.getComponent(BallInfo)
-      const animation = ball.getComponent(cc.Animation)
-
-      if (ballInfo.ballName == 'bombBall') {
-        animation.play('Ball_Explode')
-      } else {
-        isProtected ? completedAnimations++ : animation.play('Ball_Explode2')
-      }
-
-      this.component.scheduleOnce(() => {
-        isProtected ? null : HeartManager.Instance.subCurrentHeart(1)
-        isProtected ? null : this.uiManager.playHeartUIShakeAnim()
-        isProtected
-          ? SoundManager.Instance.playEffectSound('protected', false, 0.5)
-          : SoundManager.Instance.playEffectSound('explode', false, 0.2)
-      }, 0.8)
-
-      animation.once('finished', () => {
-        completedAnimations++
-
-        if (completedAnimations === currentBalls.length) {
-          this.uiManager.updateHeartUI()
-          if (HeartManager.Instance.CurrentHeart <= 0) {
-            this.gameControl.changeToGameOverState()
-            return
-          }
-          this.playExploreAnimSquance(index + 1, balls, shields, callback)
-        }
-      })
-    }
-  }
-
-  calculateExploreBalls(balls: cc.Node[]) {
-    const exploreBalls = []
-    let temp: cc.Node[] = []
-    for (let i = 0; i < balls.length; i++) {
-      if (balls[i].getComponent(BallInfo).ballName == 'bombBall') {
-        if (
-          balls[i - 1] &&
-          balls[i - 1].getComponent(BallInfo).ballName != 'bombBall'
-        ) {
-          temp.push(balls[i - 1])
-        }
-        temp.push(balls[i])
-      } else if (temp.length > 0) {
-        temp.push(balls[i])
-        exploreBalls.push(temp)
-        temp = []
-      }
-    }
-    if (temp.length > 0) {
-      exploreBalls.push(temp)
-    }
-
-    return exploreBalls
-  }
-
-  playBombWarnAnim(callback?: Function): void {
-    this.uiManager.showBombWarnUI()
-
-    SoundManager.Instance.playEffectSound('warning')
-
-    this.uiManager.bombWarnUI
-      .getComponent(cc.Animation)
-      .once('finished', () => {
-        this.uiManager.hideBombWarnUI()
-        callback && callback()
-      })
-  }
 
   playFruitsSettleAnimSquance(
     index: number,
-    settleBalls: cc.Node[],
+    balls: cc.Node[],
     callback?: Function
   ): void {
-    if (index >= settleBalls.length) {
+    console.log(index, balls.length)
+    if (index >= balls.length) {
       callback && callback()
       return
     }
 
-    let ball = settleBalls[index]
+    let ball = balls[index]
     let ballInfo = ball.getComponent(BallInfo)
-    if (ballInfo.type != 'fruit' || ballInfo.rarity == false) {
-      this.playFruitsSettleAnimSquance(index + 1, settleBalls, callback)
+    // 如果当前球的类型不是'fruit'或者稀有度为false，跳过检查
+    if (ballInfo.type != 'fruit' || ballInfo.rarity != true) {
+      this.playFruitsSettleAnimSquance(index + 1, balls, callback)
       return
     }
+    let prevBall, nextBall
+    let hasUpdated = false // 标志前后球是否被更新
 
-    let expandBalls = []
-
-    let prevBall = settleBalls[index - 1]
-    if (prevBall) {
-      let prevBallInfo = prevBall.getComponent(BallInfo)
+    if (balls[index - 1]) {
+      let prevBallInfo = balls[index - 1].getComponent(BallInfo)
+      // 检查前一个球是否为fruit并且稀有度为false
       if (prevBallInfo.type == 'fruit' && prevBallInfo.rarity == false) {
-        prevBallInfo.score *= prevBallInfo.rarityMultiplier
-        this.component.node
-          .getComponent(UIManager)
-          .updateBallScoreUI(prevBall, prevBallInfo.score)
-        expandBalls.push(prevBall)
+        prevBall = balls[index - 1]
+        prevBall.getComponent(cc.Animation).play('Ball_Expand')
+        prevBallInfo.score *= prevBallInfo.rarityMultiplier // 更新分数
+        prevBallInfo.rarity = true // 更新稀有度
+        hasUpdated = true // 标记有更新
       }
     }
-    let nextBall = settleBalls[index + 1]
-    if (nextBall) {
-      let nextBallInfo = nextBall.getComponent(BallInfo)
+    if (balls[index + 1]) {
+      let nextBallInfo = balls[index + 1].getComponent(BallInfo)
+      // 检查后一个球是否为fruit并且稀有度为false
       if (nextBallInfo.type == 'fruit' && nextBallInfo.rarity == false) {
-        nextBallInfo.score *= nextBallInfo.rarityMultiplier
-        nextBallInfo.rarity = true
-        this.component.node
-          .getComponent(UIManager)
-          .updateBallScoreUI(nextBall, nextBallInfo.score)
-        expandBalls.push(nextBall)
+        nextBall = balls[index + 1]
+        nextBall.getComponent(cc.Animation).play('Ball_Expand')
+        nextBallInfo.score *= nextBallInfo.rarityMultiplier // 更新分数
+        nextBallInfo.rarity = true // 更新稀有度
+        hasUpdated = true // 标记有更新
       }
     }
-    if (expandBalls.length == 0) {
-      this.playFruitsSettleAnimSquance(index + 1, settleBalls, callback)
+    if (!hasUpdated) {
+      this.playFruitsSettleAnimSquance(index + 1, balls, callback)
       return
     }
 
-    for (let expandBall of expandBalls) {
-      expandBall.getComponent(cc.Animation).play('Ball_Expand')
-    }
     ball.getComponent(cc.Animation).play('Ball_RarityFruitV2')
-    SoundManager.Instance.playEffectSound('expand')
+    SoundManager.Instance.playEffectSound('expand2')
 
-    this.component.scheduleOnce(() => {
-      this.playFruitsSettleAnimSquance(index + 1, settleBalls, callback)
-    }, 1.5)
+    ball.getComponent(cc.Animation).once('finished', () => {
+      if (index < balls.length) {
+        this.playFruitsSettleAnimSquance(index + 1, balls, callback)
+      }
+    })
   }
 
   playSettleAnimSquance(

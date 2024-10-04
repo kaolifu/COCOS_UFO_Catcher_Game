@@ -1,4 +1,5 @@
 import CoinManager from '../manager/CoinManager'
+import GameManager from '../manager/GameManager'
 import SkillManager from '../manager/SkillManager'
 import SoundManager from '../manager/SoundManager'
 import UIManager from '../manager/UIManager'
@@ -63,15 +64,19 @@ export default class GameControl extends cc.Component {
   }
 
   changeToInitState() {
+    if (this.node.getComponent(GameManager).isGameOver == true) return
     this.fsmManager.changeState(GameState.Init)
   }
   changeToPrepareState() {
+    if (this.node.getComponent(GameManager).isGameOver == true) return
     this.fsmManager.changeState(GameState.PrePare)
   }
   changeToPlayingState() {
+    if (this.node.getComponent(GameManager).isGameOver == true) return
     this.fsmManager.changeState(GameState.Playing)
   }
   changeToRoundOverState() {
+    if (this.node.getComponent(GameManager).isGameOver == true) return
     this.fsmManager.changeState(GameState.RoundOver)
   }
   changeToGameOverState() {

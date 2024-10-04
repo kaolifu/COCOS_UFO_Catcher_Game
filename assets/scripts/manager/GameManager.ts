@@ -9,20 +9,33 @@ const { ccclass, property } = cc._decorator
 
 @ccclass
 export default class GameManager extends cc.Component {
+  isStarted = false
+  isGameOver = false
   onLoad() {
     cc.director.getPhysicsManager().enabled = true
     cc.director.getCollisionManager().enabled = true
-  }
-
-  start() {
     this.initializeGame()
   }
 
-  // update(dt) {}
+  start() {}
+
+  update(dt) {
+    if (
+      HeartManager.Instance.CurrentHeart <= 0 &&
+      this.isGameOver == false &&
+      this.isStarted == true
+    ) {
+      this.isGameOver = true
+      this.node.getComponent(GameControl).changeToGameOverState()
+      this.node.getComponent(CatcherControl).changeToDisabledState()
+    }
+  }
 
   async initializeGame() {
     await Data.initialize()
 
+    this.isGameOver = false
+    this.isStarted = true
     this.node.getComponent(GameControl).changeToInitState()
   }
 }

@@ -14,10 +14,17 @@ export default class BallManager extends cc.Component {
   ballPrefab: cc.Prefab = null
 
   caughtBallsThisRound: cc.Node[] = []
+  caughtBombBallsThisRound: cc.Node[] = []
+  bombBallTimer: number = null
+  bombAnimTimer: number = null
   caughtAnimalBallsThisRound: cc.Node[] = []
   animalBallTimer: number = null
 
-  start() {}
+  uiManager: UIManager = null
+
+  start() {
+    this.uiManager = this.getComponent(UIManager)
+  }
 
   // update (dt) {}
 
@@ -59,7 +66,7 @@ export default class BallManager extends cc.Component {
           ballInfo.heal *= ballData[i].rarityMultiplier
           ballNode.scale = 1.5
         }
-        this.getComponent(UIManager).updateBallScoreUI(ballNode, ballInfo.score)
+        this.uiManager.updateBallScoreUI(ballNode, ballInfo.score)
         break
       }
     }
@@ -89,6 +96,8 @@ export default class BallManager extends cc.Component {
 
     if (ballInfo.ballName == 'timeBall') {
       this.settleTimeBall(ball)
+    } else if (ballInfo.ballName == 'bombBall') {
+      this.settleBombBall(ball)
     } else if (ballInfo.type == 'food') {
       this.settleFoodBall(ball)
       this.settleNormalBall(ball)
@@ -106,9 +115,60 @@ export default class BallManager extends cc.Component {
     }, 0.2)
   }
 
+  settleBombBall(ball: cc.Node) {
+    this.caughtBombBallsThisRound.push(ball)
+
+    this.caughtBombBallsThisRound.forEach((bombBall) => {
+      bombBall.active = false
+    })
+    SoundManager.Instance.playEffectSound('caughtBall')
+
+    if (this.bombBallTimer || this.bombAnimTimer) {
+      clearTimeout(this.bombBallTimer)
+      clearTimeout(this.bombAnimTimer)
+    }
+
+    this.bombBallTimer = setTimeout(() => {
+      this.explodeRandomBalls()
+
+      this.uiManager.showBombUI()
+      SoundManager.Instance.playEffectSound('warning*2')
+      this.bombBallTimer = null
+    }, 1000)
+
+    this.bombAnimTimer = setTimeout(() => {
+      HeartManager.Instance.subCurrentHeart(
+        this.caughtBombBallsThisRound.length
+      )
+      this.caughtBombBallsThisRound.forEach((bombBall) => {
+        bombBall.destroy()
+      })
+      this.uiManager.updateHeartUI()
+      this.uiManager.playHeartUIShakeAnim()
+      SoundManager.Instance.playEffectSound('explode')
+      this.caughtBombBallsThisRound = []
+      this.bombBallTimer = null
+    }, 2000)
+  }
+
+  explodeRandomBalls() {
+    let leftBalls = this.uiManager.caughtBallList.children.filter(
+      (item) => item.opacity > 0
+    )
+    let explodeCount = Math.min(2, leftBalls.length)
+    for (let i = 0; i < explodeCount; i++) {
+      let ramdomNum = Math.floor(Math.random() * leftBalls.length)
+      leftBalls[ramdomNum].getComponent(cc.Animation).play('Ball_Explode2')
+
+      this.scheduleOnce(() => {
+        leftBalls[ramdomNum].destroy()
+      }, 2)
+    }
+  }
+
   settleTimeBall(ball: cc.Node) {
     TimeManager.Instance.addRemainTime(1)
-    this.node.getComponent(UIManager).playTimerUIAddTimeAnimation()
+    this.uiManager.playTimerUIAddTimeAnimation()
     ball.destroy()
 
     SoundManager.Instance.playEffectSound('caughtTime')
@@ -172,7 +232,7 @@ export default class BallManager extends cc.Component {
 
   settleHeartBall(ball: cc.Node) {
     HeartManager.Instance.addMaxHeart(1)
-    this.node.getComponent(UIManager).updateHeartUI()
+    this.uiManager.updateHeartUI()
 
     ball.destroy()
     SoundManager.Instance.playEffectSound('heartUp')
@@ -184,7 +244,7 @@ export default class BallManager extends cc.Component {
     if (ball.getComponent(BallInfo).rarity)
       ball.getComponent(cc.Animation).play('Ball_Rarity')
 
-    ball.parent = this.node.getComponent(UIManager).caughtBallList
+    ball.parent = this.uiManager.caughtBallList
 
     SoundManager.Instance.playEffectSound('caughtBall')
   }
