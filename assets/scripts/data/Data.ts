@@ -22,11 +22,23 @@ export interface SkillData {
   effect: (level: number) => void
 }
 
+export interface ShopItemData {
+  id: string
+  itemName: string
+  type: string
+  icon: cc.SpriteFrame
+  price: number
+  desc: string
+  currentLv: number
+  maxLv: number
+}
+
 @ccclass
 export default class Data {
   public static ballData: BallData[] = []
   public static ballDataInThisGame
   public static skillData: SkillData[] = []
+  public static shopItemData: ShopItemData[] = []
 
   public static loadResource(path: string): Promise<cc.SpriteFrame> {
     return new Promise((resolve, reject) => {
@@ -78,6 +90,9 @@ export default class Data {
       const timeLv = await this.loadResource('Images/SkillIcons/timeLv')
       const heartLv = await this.loadResource('Images/SkillIcons/heartLv')
       const eggLv = await this.loadResource('Images/SkillIcons/eggLv')
+
+      const doge = await this.loadResource('Images/ShopItem/doge')
+      const kun = await this.loadResource('Images/ShopItem/kun')
       //#endregion
 
       this.ballData = [
@@ -419,6 +434,87 @@ export default class Data {
           rarity: '普通',
           percent: 0,
           effect: () => {},
+        },
+      ]
+
+      this.shopItemData = [
+        {
+          id: '1',
+          type: 'skill',
+          itemName: '水果等级 + 1',
+          icon: fruitLv,
+          desc: '水果类出现概率永久提升',
+          currentLv: 0,
+          maxLv: 99,
+          get price() {
+            if (this.currentLv < this.maxLv) return 100 * (this.currentLv + 1)
+            else return 0
+          },
+        },
+        {
+          id: '2',
+          type: 'skill',
+          itemName: '食物等级 + 1',
+          icon: foodLv,
+          desc: '食物类出现概率永久提升',
+          currentLv: 0,
+          maxLv: 99,
+          get price() {
+            if (this.currentLv < this.maxLv) return 100 * (this.currentLv + 1)
+            else return 0
+          },
+        },
+        {
+          id: '3',
+          type: 'skill',
+          itemName: '动物等级 + 1',
+          icon: animalLv,
+          desc: '动物类出现概率永久提升',
+          currentLv: 0,
+          maxLv: 99,
+          get price() {
+            if (this.currentLv < this.maxLv) return 100 * (this.currentLv + 1)
+            else return 0
+          },
+        },
+        {
+          id: '101',
+          type: 'accessory',
+          itemName: '坤坤装饰',
+          icon: kun,
+          desc: '获得坤坤装饰',
+          currentLv: 0,
+          maxLv: 1,
+          get price() {
+            if (this.currentLv < this.maxLv) return 5000 * (this.currentLv + 1)
+            else return 0
+          },
+        },
+        {
+          id: '102',
+          type: 'accessory',
+          itemName: 'DOGE装饰',
+          icon: doge,
+          desc: '获得DOGE装饰',
+          currentLv: 0,
+          maxLv: 1,
+          get price() {
+            if (this.currentLv < this.maxLv) return 5000 * (this.currentLv + 1)
+            else return 0
+          },
+        },
+        {
+          id: '201',
+          type: 'catcher',
+          itemName: '传奇爪子',
+          icon: animalLv,
+          desc: '获得传奇爪子皮肤',
+          currentLv: 0,
+          maxLv: 1,
+          get price() {
+            if (this.currentLv < this.maxLv) return 5000 * (this.currentLv + 1)
+            else return 0
+          },
         },
       ]
     } catch (error) {
