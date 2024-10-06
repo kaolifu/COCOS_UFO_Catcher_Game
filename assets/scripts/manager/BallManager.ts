@@ -2,6 +2,7 @@ import BallInfo from '../ball/BallInfo'
 import CatcherControl from '../catcher/CatcherControl'
 import Data from '../data/Data'
 import HeartManager from './HeartManager'
+import ShieldManager from './ShieldManager'
 import SoundManager from './SoundManager'
 import TimeManager from './TimeManager'
 import UIManager from './UIManager'
@@ -108,6 +109,8 @@ export default class BallManager extends cc.Component {
       this.settleNormalBall(ball)
     } else if (ballInfo.ballName == 'heartBall') {
       this.settleHeartBall(ball)
+    } else if (ballInfo.ballName == 'shieldBall') {
+      this.settleShieldBall(ball)
     } else {
       this.settleNormalBall(ball)
     }
@@ -131,7 +134,9 @@ export default class BallManager extends cc.Component {
     }
 
     this.bombBallTimer = setTimeout(() => {
-      this.explodeRandomBalls()
+      ShieldManager.Instance.CurrentShield > 0
+        ? null
+        : this.explodeRandomBalls()
 
       this.uiManager.showBombUI()
       SoundManager.Instance.playEffectSound('warning*2')
@@ -139,6 +144,15 @@ export default class BallManager extends cc.Component {
     }, 1000)
 
     this.bombAnimTimer = setTimeout(() => {
+      if (ShieldManager.Instance.CurrentShield > 0) {
+        this.uiManager.playShieldUIAnim(() => {
+          ShieldManager.Instance.subShield()
+          this.uiManager.updateShieldUI()
+        })
+        SoundManager.Instance.playEffectSound('protected', false, 1)
+        return
+      }
+
       HeartManager.Instance.subCurrentHeart(
         this.caughtBombBallsThisRound.length
       )
@@ -239,6 +253,13 @@ export default class BallManager extends cc.Component {
 
     ball.destroy()
     SoundManager.Instance.playEffectSound('heartUp')
+  }
+  settleShieldBall(ball: cc.Node) {
+    ShieldManager.Instance.addShield()
+    this.uiManager.updateShieldUI()
+
+    ball.destroy()
+    SoundManager.Instance.playEffectSound('protected')
   }
 
   settleNormalBall(ball: cc.Node) {

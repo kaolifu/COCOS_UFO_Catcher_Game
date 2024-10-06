@@ -21,9 +21,13 @@ export default class ShieldManager {
     this.currentShield++
   }
   public subShield() {
-    this.currentShield--
+    if (this.currentShield > 0) {
+      this.currentShield--
+    } else {
+      this.currentShield = 0
+    }
   }
   public resetShield() {
-    this.currentShield = 0
+    this.currentShield = 1
   }
 }
