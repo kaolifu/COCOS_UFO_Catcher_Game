@@ -1,5 +1,6 @@
 import CoinManager from '../manager/CoinManager'
 import HeartManager from '../manager/HeartManager'
+import ShieldManager from '../manager/ShieldManager'
 import SkillManager from '../manager/SkillManager'
 import StageManager from '../manager/StageManager'
 import FSMState from '../utility/FSMState'
@@ -18,6 +19,7 @@ export default class GameState_Init extends FSMState {
 
   initData() {
     HeartManager.Instance.resetHeart()
+    ShieldManager.Instance.resetShield()
     CoinManager.Instance.resetCoin()
     StageManager.Instance.resetStage()
     SkillManager.Instance.resetSkillsInThisGame()

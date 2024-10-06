@@ -33,8 +33,9 @@ export default class GameState_Prepare extends FSMState {
     let currentStage = StageManager.Instance.getStage()
     uiManager.updateStageUI(currentStage)
     uiManager.updateCoinCostUI(CoinManager.Instance.CoinCost)
-
+    
     uiManager.updateHeartUI()
+    uiManager.updateShieldUI()
     uiManager.updateCoinUI(CoinManager.Instance.Coin)
 
     this.component.getComponent(BallManager).resetBallData()

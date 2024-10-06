@@ -13,13 +13,19 @@ const { ccclass, property } = cc._decorator
 export default class GameState_RoundOver extends FSMState {
   uiManager: UIManager
   gameControl: GameControl
+
+  isFruitFeverAnimPlayed: boolean = false
   onEnter(): void {
     super.onEnter()
 
     this.uiManager = this.component.getComponent(UIManager)
     this.gameControl = this.component.getComponent(GameControl)
 
+    this.component.getComponent(CatcherControl).isRoundOver = true
+    this.isFruitFeverAnimPlayed = false
+
     let caughtBalls: cc.Node[] = this.uiManager.caughtBallList.children
+    console.log(caughtBalls)
     this.stopAllBallsAnim(caughtBalls)
 
     if (caughtBalls.length == 0) {
@@ -29,7 +35,7 @@ export default class GameState_RoundOver extends FSMState {
 
     let rarityFruitsBallExists = caughtBalls.some((ball) => {
       let ballInfo = ball.getComponent(BallInfo)
-      return ballInfo.type == 'fruit' && ballInfo.rarity == false
+      return ballInfo.type == 'fruit' && ballInfo.rarity == true
     })
     if (rarityFruitsBallExists == false) {
       this.playSettleAnimSquance(0, caughtBalls, () => {
@@ -43,6 +49,7 @@ export default class GameState_RoundOver extends FSMState {
       this.playSettleAnimSquance(0, caughtBalls, () => {
         this.gameControl.changeToPrepareState()
         this.uiManager.clearCaughtBallListChildren()
+        this.isFruitFeverAnimPlayed = false
       })
     })
   }
@@ -52,6 +59,8 @@ export default class GameState_RoundOver extends FSMState {
   }
   onExit(): void {
     super.onExit()
+
+    this.component.getComponent(CatcherControl).isRoundOver = false
   }
 
   playFruitsSettleAnimSquance(
@@ -59,7 +68,6 @@ export default class GameState_RoundOver extends FSMState {
     balls: cc.Node[],
     callback?: Function
   ): void {
-    console.log(index, balls.length)
     if (index >= balls.length) {
       callback && callback()
       return
@@ -83,7 +91,12 @@ export default class GameState_RoundOver extends FSMState {
         prevBall.getComponent(cc.Animation).play('Ball_Expand')
         prevBallInfo.score *= prevBallInfo.rarityMultiplier // 更新分数
         prevBallInfo.rarity = true // 更新稀有度
+
+        this.uiManager.updateBallScoreUI(prevBall, prevBallInfo.score)
+
         hasUpdated = true // 标记有更新
+
+        console.log(index - 1)
       }
     }
     if (balls[index + 1]) {
@@ -94,7 +107,12 @@ export default class GameState_RoundOver extends FSMState {
         nextBall.getComponent(cc.Animation).play('Ball_Expand')
         nextBallInfo.score *= nextBallInfo.rarityMultiplier // 更新分数
         nextBallInfo.rarity = true // 更新稀有度
+
+        this.uiManager.updateBallScoreUI(nextBall, nextBallInfo.score)
+
         hasUpdated = true // 标记有更新
+
+        console.log(index + 1)
       }
     }
     if (!hasUpdated) {
@@ -102,6 +120,22 @@ export default class GameState_RoundOver extends FSMState {
       return
     }
 
+    if (this.isFruitFeverAnimPlayed == false) {
+      this.isFruitFeverAnimPlayed = true
+      this.uiManager.showFruitsFeverUI()
+      this.component.scheduleOnce(() => {
+        this.uiManager.hideFruitsFeverUI()
+
+        ball.getComponent(cc.Animation).play('Ball_RarityFruitV2')
+        SoundManager.Instance.playEffectSound('expand2')
+
+        ball.getComponent(cc.Animation).once('finished', () => {
+          if (index < balls.length) {
+            this.playFruitsSettleAnimSquance(index + 1, balls, callback)
+          }
+        })
+      }, 2)
+    }
     ball.getComponent(cc.Animation).play('Ball_RarityFruitV2')
     SoundManager.Instance.playEffectSound('expand2')
 

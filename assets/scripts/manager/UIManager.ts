@@ -4,6 +4,7 @@ import SkillInfo from '../skill/SkillInfo'
 import BallManager from './BallManager'
 import CoinManager from './CoinManager'
 import HeartManager from './HeartManager'
+import ShieldManager from './ShieldManager'
 
 const { ccclass, property } = cc._decorator
 
@@ -47,6 +48,12 @@ export default class UIManager extends cc.Component {
   GameOverSettleUI: cc.Node = null
   @property(cc.Node)
   BombUI: cc.Node = null
+  @property(cc.Node)
+  ShieldUI: cc.Node = null
+  @property(cc.Prefab)
+  ShieldPerfab: cc.Prefab = null
+  @property(cc.SpriteAtlas)
+  ShieldAtlas: cc.SpriteAtlas = null
 
   start() {}
 
@@ -232,7 +239,7 @@ export default class UIManager extends cc.Component {
 
   showFruitsFeverUI() {
     this.FruitsFeverUI.active = true
-    this.FruitsFeverUI.getComponent(cc.Animation).play('FruitsFeverUI')
+    this.FruitsFeverUI.getComponent(cc.Animation).play()
   }
 
   hideFruitsFeverUI() {
@@ -270,5 +277,26 @@ export default class UIManager extends cc.Component {
 
   hideBombUI() {
     this.BombUI.active = false
+  }
+
+  updateShieldUI() {
+    this.ShieldUI.removeAllChildren()
+
+    let shieldCount = Math.floor(ShieldManager.Instance.CurrentShield / 4)
+    let shieldSm = ShieldManager.Instance.CurrentShield % 4
+
+    for (let i = 0; i < shieldCount; i++) {
+      let shieldNode = cc.instantiate(this.ShieldPerfab)
+      shieldNode.parent = this.ShieldUI
+    }
+    if (shieldSm != 0) {
+      let lastShieldNode = cc.instantiate(this.ShieldPerfab)
+      lastShieldNode.parent = this.ShieldUI
+      lastShieldNode
+        .getChildByName('shield')
+        .getComponent(cc.Sprite).spriteFrame = this.ShieldAtlas.getSpriteFrame(
+        `shield${shieldSm}`
+      )
+    }
   }
 }

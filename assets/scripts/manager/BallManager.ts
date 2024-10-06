@@ -94,6 +94,8 @@ export default class BallManager extends cc.Component {
     let ball = this.caughtBallsThisRound[index]
     let ballInfo = ball.getComponent(BallInfo)
 
+    console.log(ballInfo.ballName)
+
     if (ballInfo.ballName == 'timeBall') {
       this.settleTimeBall(ball)
     } else if (ballInfo.ballName == 'bombBall') {
@@ -140,6 +142,7 @@ export default class BallManager extends cc.Component {
       HeartManager.Instance.subCurrentHeart(
         this.caughtBombBallsThisRound.length
       )
+      console.log(this.caughtBombBallsThisRound.length)
       this.caughtBombBallsThisRound.forEach((bombBall) => {
         bombBall.destroy()
       })

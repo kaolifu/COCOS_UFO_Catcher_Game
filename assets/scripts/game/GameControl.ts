@@ -22,6 +22,8 @@ enum GameState {
 @ccclass
 export default class GameControl extends cc.Component {
   fsmManager: FSMManager = null
+
+  isRoundOver: boolean = false
   // onLoad () {}
 
   start() {

@@ -37,8 +37,6 @@ export default class GameState_Playing extends FSMState {
     let currentBallData = Data.ballDataInThisGame.filter(
       (ballData) => ballData.percent > 0
     )
-    console.log(currentBallData)
-
     um.showCountDownUI()
     SoundManager.Instance.playEffectSound('ready')
     um.countDownUI.getComponent(cc.Animation).once('finished', () => {

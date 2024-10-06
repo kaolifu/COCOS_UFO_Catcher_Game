@@ -40,6 +40,8 @@ export default class CatcherControl extends cc.Component {
 
   fsmManager: FSMManager = null
 
+  isRoundOver: boolean = false
+
   onLoad(): void {}
   start() {
     this.fsmManager = new FSMManager()
@@ -73,6 +75,8 @@ export default class CatcherControl extends cc.Component {
     )
 
     // this.fsmManager.changeState(CatcherState.Disabled)
+
+    this.isRoundOver = false
   }
 
   update(dt) {
@@ -80,15 +84,27 @@ export default class CatcherControl extends cc.Component {
   }
 
   changeToMoveXState() {
-    if (this.node.getComponent(GameManager).isGameOver == true) return
+    if (
+      this.node.getComponent(GameManager).isGameOver == true ||
+      this.isRoundOver == true
+    )
+      return
     this.fsmManager.changeState(CatcherState.MoveX)
   }
   changeToMoveYState() {
-    if (this.node.getComponent(GameManager).isGameOver == true) return
+    if (
+      this.node.getComponent(GameManager).isGameOver == true ||
+      this.isRoundOver == true
+    )
+      return
     this.fsmManager.changeState(CatcherState.MoveY)
   }
   changeToSettleState() {
-    if (this.node.getComponent(GameManager).isGameOver == true) return
+    if (
+      this.node.getComponent(GameManager).isGameOver == true ||
+      this.isRoundOver == true
+    )
+      return
     this.fsmManager.changeState(CatcherState.Settle)
   }
   changeToDisabledState() {
