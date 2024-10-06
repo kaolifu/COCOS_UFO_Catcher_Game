@@ -10,17 +10,17 @@ export default class HeartManager {
     return this._instance
   }
 
-  private maxHeart = 8
+  private maxHeart = 4
   public get MaxHeart(): number {
     return this.maxHeart
   }
-  private currentHeart = 8
+  private currentHeart = 4
   public get CurrentHeart(): number {
     return this.currentHeart
   }
 
   public resetHeart() {
-    this.maxHeart = 8
+    this.maxHeart = 4
     this.currentHeart = this.maxHeart
   }
 

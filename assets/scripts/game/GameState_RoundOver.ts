@@ -25,7 +25,7 @@ export default class GameState_RoundOver extends FSMState {
     this.isFruitFeverAnimPlayed = false
 
     let caughtBalls: cc.Node[] = this.uiManager.caughtBallList.children
-    console.log(caughtBalls)
+    // console.log(caughtBalls)
     this.stopAllBallsAnim(caughtBalls)
 
     if (caughtBalls.length == 0) {
@@ -96,7 +96,7 @@ export default class GameState_RoundOver extends FSMState {
 
         hasUpdated = true // 标记有更新
 
-        console.log(index - 1)
+        // console.log(index - 1)
       }
     }
     if (balls[index + 1]) {
@@ -112,7 +112,7 @@ export default class GameState_RoundOver extends FSMState {
 
         hasUpdated = true // 标记有更新
 
-        console.log(index + 1)
+        // console.log(index + 1)
       }
     }
     if (!hasUpdated) {

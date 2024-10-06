@@ -40,6 +40,8 @@ export default class CatcherState_MoveY extends FSMState {
       }
     )
 
+    this.anim.off('finished') // 先移除任何之前的绑定
+
     this.anim.once('finished', () => {
       this.catcherControl.changeToSettleState()
       SoundManager.Instance.stopEffectSound(this.soundId)

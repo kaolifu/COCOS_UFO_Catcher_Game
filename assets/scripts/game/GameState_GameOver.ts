@@ -1,4 +1,5 @@
 import SoundManager from '../manager/SoundManager'
+import TimeManager from '../manager/TimeManager'
 import UIManager from '../manager/UIManager'
 import FSMState from '../utility/FSMState'
 import GameControl from './GameControl'
@@ -12,6 +13,8 @@ export default class GameState_GameOver extends FSMState {
   onEnter() {
     super.onEnter()
     this.uiManager = this.component.getComponent(UIManager)
+
+    TimeManager.Instance.stopTimer()
 
     this.uiManager.showGameOverUI()
     SoundManager.Instance.stopBgm()

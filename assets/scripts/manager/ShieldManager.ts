@@ -28,6 +28,6 @@ export default class ShieldManager {
     }
   }
   public resetShield() {
-    this.currentShield = 1
+    this.currentShield = 0
   }
 }

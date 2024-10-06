@@ -303,7 +303,7 @@ export default class UIManager extends cc.Component {
     let lastShieldNode =
       this.ShieldUI.children[this.ShieldUI.children.length - 1]
     lastShieldNode.getComponent(cc.Animation).play('ShieldUI_Protect')
-    lastShieldNode.getComponent(cc.Animation).on('finished', () => {
+    lastShieldNode.getComponent(cc.Animation).once('finished', () => {
       callback && callback()
     })
   }

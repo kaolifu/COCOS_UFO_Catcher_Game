@@ -3,6 +3,7 @@ import HeartManager from '../manager/HeartManager'
 import ShieldManager from '../manager/ShieldManager'
 import SkillManager from '../manager/SkillManager'
 import StageManager from '../manager/StageManager'
+import TimeManager from '../manager/TimeManager'
 import FSMState from '../utility/FSMState'
 import GameControl from './GameControl'
 

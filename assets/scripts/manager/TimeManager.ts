@@ -11,27 +11,36 @@ export default class TimeManager {
   }
 
   roundTime: number = 15
-  timer: number = 0
-  timerId: number = 0
-  remainTime: number = this.roundTime - this.timer
+  timerId: number = null
+  remainTime: number = this.roundTime
 
   initTime() {
     this.remainTime = this.roundTime
+    this.timerId = null
+    this.stopTimer()
+    console.log(this.timerId, this.remainTime)
   }
 
   startTimer() {
-    // this.timer += 0.05
-    // this.remainTime = this.roundTime - this.timer
-    this.remainTime -= 0.05
-    if (this.remainTime <= 0) this.remainTime = 0
-    this.timerId = setTimeout(() => {
-      this.startTimer()
+    if (this.timerId != null) {
+      this.stopTimer() // 确保不会有残留的计时器在运行
+    }
+
+    this.timerId = setInterval(() => {
+      this.remainTime -= 0.05
+      console.log(this.timerId, this.remainTime)
+      if (this.remainTime <= 0) {
+        this.remainTime = 0
+      }
     }, 50)
   }
   stopTimer() {
-    // this.timer = 0
-    // this.remainTime = this.roundTime
-    clearTimeout(this.timerId)
+    if (this.timerId != null) {
+      clearInterval(this.timerId) // 使用 clearInterval 代替 clearTimeout
+      this.timerId = null
+    }
+    this.remainTime = this.roundTime // 确保时间为0
+    console.log(this.timerId, this.remainTime)
   }
   getRemainTime() {
     return this.remainTime

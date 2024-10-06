@@ -150,13 +150,13 @@ export default class BallManager extends cc.Component {
           this.uiManager.updateShieldUI()
         })
         SoundManager.Instance.playEffectSound('protected', false, 1)
+        this.caughtBombBallsThisRound = []
         return
       }
 
       HeartManager.Instance.subCurrentHeart(
         this.caughtBombBallsThisRound.length
       )
-      console.log(this.caughtBombBallsThisRound.length)
       this.caughtBombBallsThisRound.forEach((bombBall) => {
         bombBall.destroy()
       })

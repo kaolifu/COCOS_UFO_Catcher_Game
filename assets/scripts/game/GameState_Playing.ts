@@ -34,13 +34,9 @@ export default class GameState_Playing extends FSMState {
 
     SkillManager.Instance.applyAllSkillEffect()
 
-    let currentBallData = Data.ballDataInThisGame.filter(
-      (ballData) => ballData.percent > 0
-    )
     um.showCountDownUI()
     SoundManager.Instance.playEffectSound('ready')
     um.countDownUI.getComponent(cc.Animation).once('finished', () => {
-
       um.hideCountDownUI()
       bm.createBalls()
       ccontrol.changeToMoveXState()
@@ -58,9 +54,9 @@ export default class GameState_Playing extends FSMState {
     if (TimeManager.Instance.getRemainTime() <= 0 && this.isPlaying) {
       this.isPlaying = false
 
-      TimeManager.Instance.stopTimer()
       this.component.node.getComponent(CatcherControl).changeToDisabledState()
 
+      TimeManager.Instance.stopTimer()
       this.component.node.getComponent(UIManager).showTimeOutUI()
       SoundManager.Instance.playEffectSound('timeUp')
 

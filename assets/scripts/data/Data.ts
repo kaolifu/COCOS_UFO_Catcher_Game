@@ -265,7 +265,7 @@ export default class Data {
           ballName: 'shieldBall',
           type: 'special',
           score: 0,
-          percent: 10,
+          percent: 1,
           rarityPercent: 0,
           rarityMultiplier: 0,
           spriteFrame: shield,
